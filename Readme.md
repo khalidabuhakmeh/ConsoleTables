@@ -19,6 +19,10 @@ Have you ever just wanted to output flat structured POCO out to console? Sure yo
 
             Console.ReadKey();
         }
+        
+## Sample Output (Screenshot)
+
+<img src="https://raw.github.com/khalidabuhakmeh/ConsoleTables/master/screenshot.PNG" alt="screenshot" />
 
 The MIT License (MIT)
 
