@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>ConsoleTables</id>
+        <version>1.0.0</version>
+        <title>ConsoleTables</title>
+        <authors>khalidabuhakmeh</authors>
+        <owners>khalidabuhakmeh</owners>
+        <projectUrl>https://github.com/khalidabuhakmeh/ConsoleTables</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</description>
+        <summary>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</summary>
+        <tags>console</tags>
+    </metadata>
+    <files>
+        <file src="ConsoleTables.Core\bin\Release\ConsoleTables.Core.dll" target="lib\net45\ConsoleTables.Core.dll" />
+    </files>
+</package>
