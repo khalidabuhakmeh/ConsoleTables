@@ -46,7 +46,7 @@ namespace ConsoleTables.Core
             var columns = typeof(T).GetProperties().Select(x => x.Name).ToArray();
             table.AddColumn(columns);
 
-            foreach (var propertyValues in values.Select(value => columns.Select(column => typeof(T).GetProperty(column).GetValue(value))))
+            foreach (var propertyValues in values.Select(value => columns.Select(column => typeof(T).GetProperty(column).GetValue(value, null))))
                 table.AddRow(propertyValues.ToArray());
 
             return table;
