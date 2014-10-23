@@ -13,6 +13,6 @@
         <tags>console</tags>
     </metadata>
     <files>
-        <file src="ConsoleTables.Core\bin\Release\ConsoleTables.Core.dll" target="lib\net45\ConsoleTables.Core.dll" />
+        <file src="ConsoleTables.Core\bin\Release\ConsoleTables.Core.dll" target="lib\net40\ConsoleTables.Core.dll" />
     </files>
 </package>
