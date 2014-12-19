@@ -15,10 +15,17 @@ namespace ConsoleTables
             table.Write();
             Console.WriteLine();
 
+            table = new ConsoleTable("I've", "got", "nothing");
+            table.Write();
+            Console.WriteLine();
+            
             var rows = Enumerable.Repeat(new Something(), 10);
 
             ConsoleTable.From<Something>(rows).Write();
 
+            rows = Enumerable.Repeat(new Something(), 0);
+            ConsoleTable.From<Something>(rows).Write();
+            
             Console.ReadKey();
         }
     }
