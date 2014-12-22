@@ -7,16 +7,16 @@ namespace ConsoleTables.Core
 {
     public class ConsoleTable
     {
-        public IList<string> Columns { get; protected set; }
+        public IList<object> Columns { get; protected set; }
         public IList<object[]> Rows { get; protected set; }
 
         public ConsoleTable(params string[] columns)
         {
-            Columns = new List<string>(columns);
+            Columns = new List<object>(columns);
             Rows = new List<object[]>();
         }
 
-        public ConsoleTable AddColumn(string[] names)
+        public ConsoleTable AddColumn(IEnumerable<string> names)
         {
             foreach (var name in names)
                 Columns.Add(name);
@@ -69,29 +69,31 @@ namespace ConsoleTables.Core
                 .Select(i => " | {" + i + ", -" + columnLengths[i] + " }")
                 .Aggregate((s, a) => s + a) + " |";
 
-            var longestLine = 0;
             var results = new List<string>();
 
             // find the longest formatted line
-            foreach (var result in Rows.Select(row => string.Format(format, row)))
-            {
-                longestLine = Math.Max(longestLine, result.Length);
-                results.Add(result);
-            }
+            var maxRowLength = Math.Max(0, Rows.Any() ? Rows.Max(row => string.Format(format, row).Length) : 0);
+            var columnHeaders = string.Format(format, Columns.ToArray());
+            
+            // longest line is greater of formatted columnHeader and longest row
+            var longestLine = Math.Max(maxRowLength, columnHeaders.Length);
+            
+            // add each row
+            Array.ForEach(Rows.Select(row => string.Format(format, row)).ToArray(), results.Add);
 
             // create the divider
-            var line = " " + string.Join("", Enumerable.Repeat("-", longestLine - 1)) + " ";
+            var divider = " " + string.Join("", Enumerable.Repeat("-", longestLine - 1)) + " ";
 
-            builder.AppendLine(line);
-            builder.AppendLine(string.Format(format, Columns.ToArray()));
+            builder.AppendLine(divider);
+            builder.AppendLine(columnHeaders);
 
             foreach (var row in results)
             {
-                builder.AppendLine(line);
+                builder.AppendLine(divider);
                 builder.AppendLine(row);
             }
 
-            builder.AppendLine(line);
+            builder.AppendLine(divider);
             builder.AppendLine("");
             builder.AppendFormat(" Count: {0}", Rows.Count);
 
