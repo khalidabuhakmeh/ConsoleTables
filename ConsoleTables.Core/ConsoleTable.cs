@@ -21,7 +21,6 @@ namespace ConsoleTables.Core
         {
             foreach (var name in names)
                 Columns.Add(name);
-
             return this;
         }
 
@@ -124,6 +123,41 @@ namespace ConsoleTables.Core
             return builder.ToString();
         }
 
+        public string ToStringAlternative()
+        {
+            var builder = new StringBuilder();
+
+            // find the longest column by searching each row
+            var columnLengths = ColumnLengths();
+
+            // create the string format with padding
+            var format = Format(columnLengths);
+
+            var results = new List<string>();
+
+            // find the longest formatted line
+            var columnHeaders = string.Format(format, Columns.ToArray());
+
+            // add each row
+            Array.ForEach(Rows.Select(row => string.Format(format, row)).ToArray(), results.Add);
+
+            // create the divider
+            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
+            var dividerPlus = divider.Replace("|", "+");
+
+            builder.AppendLine(dividerPlus);
+            builder.AppendLine(columnHeaders);
+
+            foreach (var row in results)
+            {
+                builder.AppendLine(dividerPlus);
+                builder.AppendLine(row);
+            }
+            builder.AppendLine(dividerPlus);
+
+            return builder.ToString();
+        }
+
         private string Format(List<int> columnLengths)
         {
             var format = (Enumerable.Range(0, Columns.Count)
@@ -153,6 +187,9 @@ namespace ConsoleTables.Core
                 case Core.Format.MarkDown:
                     Console.WriteLine(ToMarkDownString());
                     break;
+                case Core.Format.Alternative:
+                    Console.WriteLine(ToStringAlternative());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
@@ -162,6 +199,7 @@ namespace ConsoleTables.Core
     public enum Format
     {
         Default = 0,
-        MarkDown = 1
+        MarkDown = 1,
+        Alternative = 2
     }
 }
