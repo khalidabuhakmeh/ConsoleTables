@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ConsoleTables.Core
 {
@@ -57,12 +58,7 @@ namespace ConsoleTables.Core
             var builder = new StringBuilder();
 
             // find the longest column by searching each row
-            var columnLengths = Columns
-                .Select((t, i) => Rows.Select(x => x[i])
-                    .Union(Columns)
-                    .Where(x => x != null)
-                    .Select(x => x.ToString().Length).Max())
-                    .ToList();
+            var columnLengths = ColumnLengths();
 
             // create the string format with padding
             var format = Enumerable.Range(0, Columns.Count)
@@ -74,10 +70,10 @@ namespace ConsoleTables.Core
             // find the longest formatted line
             var maxRowLength = Math.Max(0, Rows.Any() ? Rows.Max(row => string.Format(format, row).Length) : 0);
             var columnHeaders = string.Format(format, Columns.ToArray());
-            
+
             // longest line is greater of formatted columnHeader and longest row
             var longestLine = Math.Max(maxRowLength, columnHeaders.Length);
-            
+
             // add each row
             Array.ForEach(Rows.Select(row => string.Format(format, row)).ToArray(), results.Add);
 
@@ -100,9 +96,72 @@ namespace ConsoleTables.Core
             return builder.ToString();
         }
 
-        public void Write()
+        public string ToMarkDownString()
         {
-            Console.WriteLine(ToString());
+            var builder = new StringBuilder();
+
+            // find the longest column by searching each row
+            var columnLengths = ColumnLengths();
+
+            // create the string format with padding
+            var format = Format(columnLengths);
+
+            var results = new List<string>();
+
+            // find the longest formatted line
+            var columnHeaders = string.Format(format, Columns.ToArray());
+
+            // add each row
+            Array.ForEach(Rows.Select(row => string.Format(format, row)).ToArray(), results.Add);
+
+            // create the divider
+            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
+
+            builder.AppendLine(columnHeaders);
+            builder.AppendLine(divider);
+            results.ForEach(row => builder.AppendLine(row));
+
+            return builder.ToString();
         }
+
+        private string Format(List<int> columnLengths)
+        {
+            var format = (Enumerable.Range(0, Columns.Count)
+                .Select(i => " | {" + i + ", -" + columnLengths[i] + " }")
+                .Aggregate((s, a) => s + a) + " |").Trim();
+            return format;
+        }
+
+        private List<int> ColumnLengths()
+        {
+            var columnLengths = Columns
+                .Select((t, i) => Rows.Select(x => x[i])
+                    .Union(Columns)
+                    .Where(x => x != null)
+                    .Select(x => x.ToString().Length).Max())
+                .ToList();
+            return columnLengths;
+        }
+
+        public void Write(Format format = Core.Format.Default)
+        {
+            switch (format)
+            {
+                case Core.Format.Default:
+                    Console.WriteLine(ToString());
+                    break;
+                case Core.Format.MarkDown:
+                    Console.WriteLine(ToMarkDownString());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
+            }
+        }
+    }
+
+    public enum Format
+    {
+        Default = 0,
+        MarkDown = 1
     }
 }
