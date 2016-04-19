@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ConsoleTables</id>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <title>ConsoleTables</title>
         <authors>khalidabuhakmeh</authors>
         <owners>khalidabuhakmeh</owners>
@@ -10,6 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</description>
         <summary>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</summary>
+        <releaseNotes>Added Markdown tables</releaseNotes>
         <tags>console</tags>
     </metadata>
     <files>
