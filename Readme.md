@@ -15,11 +15,42 @@ static void Main(String[] args)
 
     var rows = Enumerable.Repeat(new Something(), 10);
 
-    ConsoleTable.From<Something>(rows).Write();
+    ConsoleTable
+       .From<Something>(rows)
+       .Write(Format.Alternative);
 
     Console.ReadKey();
 }
 ```
+
+## Console output
+```bat
+
+FORMAT: Default:
+
+ --------------------------------------------------
+ | one                        | two       | three |
+ --------------------------------------------------
+ | 1                          | 2         | 3     |
+ --------------------------------------------------
+ | this line should be longer | yes it is | oh    |
+ --------------------------------------------------
+
+ Count: 2
+
+
+FORMAT: Alternative:
+
++----------------------------+-----------+-------+
+| one                        | two       | three |
++----------------------------+-----------+-------+
+| 1                          | 2         | 3     |
++----------------------------+-----------+-------+
+| this line should be longer | yes it is | oh    |
++----------------------------+-----------+-------+
+```
+
+
 
 ## Sample Output (Screenshot)
 
