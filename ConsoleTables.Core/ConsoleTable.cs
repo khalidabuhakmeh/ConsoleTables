@@ -61,7 +61,7 @@ namespace ConsoleTables.Core
 
             // create the string format with padding
             var format = Enumerable.Range(0, Columns.Count)
-                .Select(i => " | {" + i + ", -" + columnLengths[i] + " }")
+                .Select(i => " | {" + i + ",-" + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " |";
 
             var results = new List<string>();
@@ -161,7 +161,7 @@ namespace ConsoleTables.Core
         private string Format(List<int> columnLengths)
         {
             var format = (Enumerable.Range(0, Columns.Count)
-                .Select(i => " | {" + i + ", -" + columnLengths[i] + " }")
+                .Select(i => " | {" + i + ",-" + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " |").Trim();
             return format;
         }
