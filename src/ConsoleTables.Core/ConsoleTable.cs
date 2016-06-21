@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -44,10 +45,11 @@ namespace ConsoleTables.Core
         {
             var table = new ConsoleTable();
 
-            var columns = typeof(T).GetProperties().Select(x => x.Name).ToArray();
+            var columns = GetColumns<T>();
+                
             table.AddColumn(columns);
 
-            foreach (var propertyValues in values.Select(value => columns.Select(column => typeof(T).GetProperty(column).GetValue(value, null))))
+            foreach (var propertyValues in values.Select(value => columns.Select(column => GetColumnValue<T>(value, column) )))
                 table.AddRow(propertyValues.ToArray());
 
             return table;
@@ -188,6 +190,24 @@ namespace ConsoleTables.Core
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
+        }
+
+        private static IEnumerable<string> GetColumns<T>()
+        {
+#if NET40        
+            return typeof(T).GetProperties().Select(x => x.Name).ToArray();
+#else
+            return typeof(T).GetRuntimeProperties().Select(x => x.Name).ToArray();
+#endif
+        }
+
+        private static object GetColumnValue<T>(object target, string column)
+        {
+#if NET40
+            return typeof (T).GetProperty(column).GetValue(target, null);
+#else
+            return typeof(T).GetRuntimeProperty(column).GetValue(target, null);
+#endif
         }
     }
 
