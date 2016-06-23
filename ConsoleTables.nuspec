@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ConsoleTables</id>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
         <title>ConsoleTables</title>
         <authors>khalidabuhakmeh</authors>
         <owners>khalidabuhakmeh</owners>
@@ -10,9 +10,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</description>
         <summary>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</summary>
-        <releaseNotes>Fixed potential Mono bug</releaseNotes>
+        <releaseNotes>added .NET Core Support</releaseNotes>
         <tags>console</tags>
     </metadata>
     <files>
+        <file src="src\ConsoleTables.Core\bin\Release\net40\ConsoleTables.Core.dll" target="lib\net40\ConsoleTables.Core.dll" />
+        <file src="src\ConsoleTables.Core\bin\Release\netstandard1.4\ConsoleTables.Core.dll" target="lib\netstandard1.4\ConsoleTables.Core.dll" />
     </files>
 </package>
