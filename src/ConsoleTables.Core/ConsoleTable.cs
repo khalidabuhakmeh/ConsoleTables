@@ -193,21 +193,13 @@ namespace ConsoleTables.Core
         }
 
         private static IEnumerable<string> GetColumns<T>()
-        {
-#if NET40        
+        {  
             return typeof(T).GetProperties().Select(x => x.Name).ToArray();
-#else
-            return typeof(T).GetRuntimeProperties().Select(x => x.Name).ToArray();
-#endif
         }
 
         private static object GetColumnValue<T>(object target, string column)
         {
-#if NET40
             return typeof (T).GetProperty(column).GetValue(target, null);
-#else
-            return typeof(T).GetRuntimeProperty(column).GetValue(target, null);
-#endif
         }
     }
 
