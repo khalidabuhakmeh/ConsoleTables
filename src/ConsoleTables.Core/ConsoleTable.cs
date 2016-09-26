@@ -20,22 +20,17 @@ namespace ConsoleTables.Core
 
         public ConsoleTable AddColumn(IEnumerable<string> names)
         {
-            foreach (var name in names)
-                Columns.Add(name);
+            foreach (var name in names) Columns.Add(name);
             return this;
         }
 
         public ConsoleTable AddRow(params object[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException(nameof(values));
+            if (values == null) throw new ArgumentNullException(nameof(values));
 
-            if (!Columns.Any())
-                throw new Exception("Please set the columns first");
+            if (!Columns.Any()) throw new Exception("Please set the columns first");
 
-            if (Columns.Count != values.Length)
-                throw new Exception(
-                    $"The number columns in the row ({Columns.Count}) does not match the values ({values.Length}");
+            if (Columns.Count != values.Length) throw new Exception($"The number columns in the row ({Columns.Count}) does not match the values ({values.Length}");
 
             Rows.Add(values);
             return this;
@@ -44,7 +39,6 @@ namespace ConsoleTables.Core
         public static ConsoleTable From<T>(IEnumerable<T> values)
         {
             var table = new ConsoleTable();
-
             var columns = GetColumns<T>();
                 
             table.AddColumn(columns);
@@ -99,21 +93,11 @@ namespace ConsoleTables.Core
         public string ToMarkDownString()
         {
             var builder = new StringBuilder();
-
-            // find the longest column by searching each row
-            var columnLengths = ColumnLengths();
-
-            // create the string format with padding
-            var format = Format(columnLengths);
-
-            // find the longest formatted line
-            var columnHeaders = string.Format(format, Columns.ToArray());
-
-            // add each row
-            var results = Rows.Select(row => string.Format(format, row)).ToList();
-
-            // create the divider
-            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
+            var columnLengths = ColumnLengths();  // find the longest column by searching each row
+            var format = Format(columnLengths);   // create the string format with padding
+            var columnHeaders = string.Format(format, Columns.ToArray());  // find the longest formatted line
+            var results = Rows.Select(row => string.Format(format, row)).ToList();  // add each row
+            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");  // create the divider
 
             builder.AppendLine(columnHeaders);
             builder.AppendLine(divider);
@@ -126,20 +110,12 @@ namespace ConsoleTables.Core
         {
             var builder = new StringBuilder();
 
-            // find the longest column by searching each row
-            var columnLengths = ColumnLengths();
-
-            // create the string format with padding
-            var format = Format(columnLengths);
-
-            // find the longest formatted line
-            var columnHeaders = string.Format(format, Columns.ToArray());
-
-            // add each row
-            var results = Rows.Select(row => string.Format(format, row)).ToList();
-
-            // create the divider
-            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
+            
+            var columnLengths = ColumnLengths();  // find the longest column by searching each row
+            var format = Format(columnLengths);   // create the string format with padding
+            var columnHeaders = string.Format(format, Columns.ToArray());  // find the longest formatted line
+            var results = Rows.Select(row => string.Format(format, row)).ToList();  // add each row
+            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");  // create the divider
             var dividerPlus = divider.Replace("|", "+");
 
             builder.AppendLine(dividerPlus);
@@ -187,8 +163,7 @@ namespace ConsoleTables.Core
                 case Core.Format.Alternative:
                     Console.WriteLine(ToStringAlternative());
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
+                default: throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
         }
 
