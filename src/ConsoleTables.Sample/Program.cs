@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using ConsoleTables.Core;
+using ConsoleTables;
 
-namespace ConsoleTables
+namespace ConsoleTables.Sample
 {
     class Program
     {
