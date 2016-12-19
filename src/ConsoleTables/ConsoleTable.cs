@@ -194,12 +194,12 @@ namespace ConsoleTables
 
         private static IEnumerable<string> GetColumns<T>()
         {  
-            return typeof(T).GetTypeInfo().DeclaredProperties.Select(x => x.Name).ToArray();
+            return typeof(T).GetProperties().Select(x => x.Name).ToArray();
         }
 
         private static object GetColumnValue<T>(object target, string column)
         {
-            return typeof(T).GetTypeInfo().DeclaredProperties.Single(p => p.Name == column).GetValue(target, null);
+            return typeof(T).GetProperty(column).GetValue(target, null);
         }
     }
 
