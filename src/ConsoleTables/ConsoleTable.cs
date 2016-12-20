@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ConsoleTables.Core
+namespace ConsoleTables
 {
     public class ConsoleTable
     {
@@ -174,17 +174,17 @@ namespace ConsoleTables.Core
             return columnLengths;
         }
 
-        public void Write(Format format = Core.Format.Default)
+        public void Write(Format format = ConsoleTables.Format.Default)
         {
             switch (format)
             {
-                case Core.Format.Default:
+                case ConsoleTables.Format.Default:
                     Console.WriteLine(ToString());
                     break;
-                case Core.Format.MarkDown:
+                case ConsoleTables.Format.MarkDown:
                     Console.WriteLine(ToMarkDownString());
                     break;
-                case Core.Format.Alternative:
+                case ConsoleTables.Format.Alternative:
                     Console.WriteLine(ToStringAlternative());
                     break;
                 default:
@@ -199,7 +199,7 @@ namespace ConsoleTables.Core
 
         private static object GetColumnValue<T>(object target, string column)
         {
-            return typeof (T).GetProperty(column).GetValue(target, null);
+            return typeof(T).GetProperty(column).GetValue(target, null);
         }
     }
 
