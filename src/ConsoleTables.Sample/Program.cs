@@ -28,10 +28,21 @@ namespace ConsoleTables.Sample
 
             var rows = Enumerable.Repeat(new Something(), 10);
 
+            
+
             ConsoleTable.From<Something>(rows).Write();
 
             rows = Enumerable.Repeat(new Something(), 0);
             ConsoleTable.From<Something>(rows).Write();
+
+            var noCount =
+            new ConsoleTable(new ConsoleTableOptions
+            {
+                Columns = new[] { "one", "two", "three" },
+                EnableCount = false
+            });
+
+            noCount.AddRow(1, 2, 3).Write();
 
             Console.ReadKey();
         }

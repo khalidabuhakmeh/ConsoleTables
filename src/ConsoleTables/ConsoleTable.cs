@@ -9,13 +9,21 @@ namespace ConsoleTables
 {
     public class ConsoleTable
     {
-        public IList<object> Columns { get; protected set; }
+        public IList<object> Columns { get; set; }
         public IList<object[]> Rows { get; protected set; }
 
+        public ConsoleTableOptions Options { get; protected set; }
+
         public ConsoleTable(params string[] columns)
+            :this(new ConsoleTableOptions { Columns = new List<string>(columns) })
+        {          
+        }
+
+        public ConsoleTable(ConsoleTableOptions options)
         {
-            Columns = new List<object>(columns);
+            Options = options ?? throw new ArgumentNullException("options");
             Rows = new List<object[]>();
+            Columns = new List<object>(options.Columns);
         }
 
         public ConsoleTable AddColumn(IEnumerable<string> names)
@@ -90,8 +98,12 @@ namespace ConsoleTables
             }
 
             builder.AppendLine(divider);
-            builder.AppendLine("");
-            builder.AppendFormat(" Count: {0}", Rows.Count);
+
+            if (Options.EnableCount)
+            {
+                builder.AppendLine("");
+                builder.AppendFormat(" Count: {0}", Rows.Count);
+            }
 
             return builder.ToString();
         }
@@ -201,6 +213,12 @@ namespace ConsoleTables
         {
             return typeof(T).GetProperty(column).GetValue(target, null);
         }
+    }
+
+    public class ConsoleTableOptions
+    {
+        public IEnumerable<string> Columns { get; set; } = new List<string>();
+        public bool EnableCount { get; set; } = true;
     }
 
     public enum Format
