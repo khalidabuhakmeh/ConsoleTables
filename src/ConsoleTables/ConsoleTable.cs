@@ -108,7 +108,11 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
-        public string ToMarkDownString() => ToMarkDownString('|');
+        public string ToMarkDownString()
+        {
+            return ToMarkDownString('|');
+        }
+
         private string ToMarkDownString(char delimiter)
         {
             var builder = new StringBuilder();
@@ -135,7 +139,10 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
-        public string ToMinimalString() => ToMarkDownString(char.MinValue);
+        public string ToMinimalString()
+        {
+            return ToMarkDownString(char.MinValue);
+        }
 
         public string ToStringAlternative()
         {
