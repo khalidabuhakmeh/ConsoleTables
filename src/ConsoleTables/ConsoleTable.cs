@@ -108,7 +108,8 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
-        public string ToMarkDownString()
+        public string ToMarkDownString() => ToMarkDownString('|');
+        private string ToMarkDownString(char delimiter)
         {
             var builder = new StringBuilder();
 
@@ -116,7 +117,7 @@ namespace ConsoleTables
             var columnLengths = ColumnLengths();
 
             // create the string format with padding
-            var format = Format(columnLengths);
+            var format = Format(columnLengths, delimiter);
 
             // find the longest formatted line
             var columnHeaders = string.Format(format, Columns.ToArray());
@@ -133,6 +134,8 @@ namespace ConsoleTables
 
             return builder.ToString();
         }
+
+        public string ToMinimalString() => ToMarkDownString(char.MinValue);
 
         public string ToStringAlternative()
         {
@@ -167,11 +170,12 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
-        private string Format(List<int> columnLengths)
+        private string Format(List<int> columnLengths, char delimiter = '|')
         {
+            var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
             var format = (Enumerable.Range(0, Columns.Count)
-                .Select(i => " | {" + i + ",-" + columnLengths[i] + "}")
-                .Aggregate((s, a) => s + a) + " |").Trim();
+                .Select(i => " "+ delimiterStr + " {" + i + ",-" + columnLengths[i] + "}")
+                .Aggregate((s, a) => s + a) + " " + delimiterStr).Trim();
             return format;
         }
 
@@ -199,6 +203,9 @@ namespace ConsoleTables
                 case ConsoleTables.Format.Alternative:
                     Console.WriteLine(ToStringAlternative());
                     break;
+                case ConsoleTables.Format.Minimal:
+                    Console.WriteLine(ToMinimalString());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
@@ -225,6 +232,7 @@ namespace ConsoleTables
     {
         Default = 0,
         MarkDown = 1,
-        Alternative = 2
+        Alternative = 2,
+        Minimal = 3
     }
 }
