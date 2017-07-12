@@ -22,6 +22,10 @@ namespace ConsoleTables.Sample
             table.Write(Format.Alternative);
             Console.WriteLine();
 
+            Console.WriteLine("\nFORMAT: Minimal:\n");
+            table.Write(Format.Minimal);
+            Console.WriteLine();
+
             table = new ConsoleTable("I've", "got", "nothing");
             table.Write();
             Console.WriteLine();
