@@ -190,7 +190,7 @@ namespace ConsoleTables
         {
             var columnLengths = Columns
                 .Select((t, i) => Rows.Select(x => x[i])
-                    .Union(Columns)
+                    .Union(new[] { Columns[i] })
                     .Where(x => x != null)
                     .Select(x => x.ToString().Length).Max())
                 .ToList();
