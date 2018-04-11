@@ -177,6 +177,20 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
+        private string ToCsvString() 
+        {
+            var delimiter = ";";
+            var builder = new StringBuilder();
+            
+            // Add header row
+            builder.AppendLine(string.Join(delimiter, Columns));
+
+            // Add data rows
+            Rows.Select(row => string.Join(delimiter, row)).ToList().ForEach(row => builder.AppendLine(row));
+
+            return builder.ToString();
+        }
+
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
@@ -213,6 +227,9 @@ namespace ConsoleTables
                 case ConsoleTables.Format.Minimal:
                     Console.WriteLine(ToMinimalString());
                     break;
+                case ConsoleTables.Format.Csv:
+                    Console.WriteLine(ToCsvString());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
@@ -240,6 +257,7 @@ namespace ConsoleTables
         Default = 0,
         MarkDown = 1,
         Alternative = 2,
-        Minimal = 3
+        Minimal = 3,
+        Csv = 4
     }
 }
