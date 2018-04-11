@@ -177,7 +177,8 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
-        private string ToCsvString() {
+        private string ToCsvString() 
+        {
             var delimiter = ";";
             var builder = new StringBuilder();
             
