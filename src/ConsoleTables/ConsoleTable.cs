@@ -92,7 +92,7 @@ namespace ConsoleTables
 
             // set rigth alinment if is a number
             var columnAlingment = Enumerable.Range(0, Columns.Count)
-                .Select(i => Options.NumberRigthAligned && NumericTypes.Contains(ColumnTypes[i]) ? "" : "-")
+                .Select(i => IsRigthAligned(i) ? "" : "-")
                 .ToList();
 
             // create the string format with padding
@@ -204,11 +204,21 @@ namespace ConsoleTables
 
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
+            // set rigth alinment if is a number
+            var columnAlingment = Enumerable.Range(0, Columns.Count)
+                .Select(i => IsRigthAligned(i) ? "" : "-")
+                .ToList();
+
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
             var format = (Enumerable.Range(0, Columns.Count)
-                .Select(i => " " + delimiterStr + " {" + i + ",-" + columnLengths[i] + "}")
+                .Select(i => " " + delimiterStr + " {" + i + "," + columnAlingment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " " + delimiterStr).Trim();
             return format;
+        }
+
+        private bool IsRigthAligned(int i)
+        {
+            return Options.NumberRigthAligned && ColumnTypes != null && NumericTypes.Contains(ColumnTypes[i]);
         }
 
         private List<int> ColumnLengths()
