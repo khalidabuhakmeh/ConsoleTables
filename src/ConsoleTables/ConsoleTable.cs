@@ -91,13 +91,13 @@ namespace ConsoleTables
             var columnLengths = ColumnLengths();
 
             // set rigth alinment if is a number
-            var columnAlingment = Enumerable.Range(0, Columns.Count)
-                .Select(i => IsRigthAligned(i) ? "" : "-")
+            var columnAlignment = Enumerable.Range(0, Columns.Count)
+                .Select(i => IsRightAligned(i) ? "" : "-")
                 .ToList();
 
             // create the string format with padding
             var format = Enumerable.Range(0, Columns.Count)
-                .Select(i => " | {" + i + "," + columnAlingment[i] + columnLengths[i] + "}")
+                .Select(i => " | {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " |";
 
             // find the longest formatted line
@@ -205,18 +205,18 @@ namespace ConsoleTables
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
             // set rigth alinment if is a number
-            var columnAlingment = Enumerable.Range(0, Columns.Count)
-                .Select(i => IsRigthAligned(i) ? "" : "-")
+            var columnAlignment = Enumerable.Range(0, Columns.Count)
+                .Select(i => IsRightAligned(i) ? "" : "-")
                 .ToList();
 
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
             var format = (Enumerable.Range(0, Columns.Count)
-                .Select(i => " " + delimiterStr + " {" + i + "," + columnAlingment[i] + columnLengths[i] + "}")
+                .Select(i => " " + delimiterStr + " {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " " + delimiterStr).Trim();
             return format;
         }
 
-        private bool IsRigthAligned(int i)
+        private bool IsRightAligned(int i)
         {
             return Options.NumberRigthAligned && ColumnTypes != null && NumericTypes.Contains(ColumnTypes[i]);
         }
