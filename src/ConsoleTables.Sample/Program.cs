@@ -5,7 +5,7 @@ namespace ConsoleTables.Sample
 {
     class Program
     {
-        static void Main(String[] args)
+        static void Main(string[] args)
         {
             var table = new ConsoleTable("one", "two", "three");
             table.AddRow(1, 2, 3)
@@ -38,11 +38,11 @@ namespace ConsoleTables.Sample
             rows = Enumerable.Repeat(new Something(), 0);
             ConsoleTable.From<Something>(rows).Write();
 
-            Console.WriteLine("\nNumberRigthAligned = true\n");
+            Console.WriteLine("\nNumberAlignment = Alignment.Rigth\n");
             rows = Enumerable.Repeat(new Something(), 2);
             ConsoleTable
                 .From(rows)
-                .Configure(o => o.NumberRigthAligned = true)
+                .Configure(o => o.NumberAlignment = Alignment.Rigth)
                 .Write();
 
             var noCount =

@@ -92,7 +92,7 @@ namespace ConsoleTables
 
             // set rigth alinment if is a number
             var columnAlignment = Enumerable.Range(0, Columns.Count)
-                .Select(i => IsRightAligned(i) ? "" : "-")
+                .Select(GetNumberAlignment)
                 .ToList();
 
             // create the string format with padding
@@ -206,7 +206,7 @@ namespace ConsoleTables
         {
             // set rigth alinment if is a number
             var columnAlignment = Enumerable.Range(0, Columns.Count)
-                .Select(i => IsRightAligned(i) ? "" : "-")
+                .Select(GetNumberAlignment)
                 .ToList();
 
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
@@ -216,9 +216,13 @@ namespace ConsoleTables
             return format;
         }
 
-        private bool IsRightAligned(int i)
+        private string GetNumberAlignment(int i)
         {
-            return Options.NumberRigthAligned && ColumnTypes != null && NumericTypes.Contains(ColumnTypes[i]);
+            return Options.NumberAlignment == Alignment.Rigth
+                    && ColumnTypes != null
+                    && NumericTypes.Contains(ColumnTypes[i])
+                ? ""
+                : "-";
         }
 
         private List<int> ColumnLengths()
@@ -277,7 +281,7 @@ namespace ConsoleTables
         /// <summary>
         /// Enable only from a list of objects
         /// </summary>
-        public bool NumberRigthAligned { get; set; }
+        public Alignment NumberAlignment { get; set; } = Alignment.Left;
     }
 
     public enum Format
@@ -286,5 +290,11 @@ namespace ConsoleTables
         MarkDown = 1,
         Alternative = 2,
         Minimal = 3
+    }
+
+    public enum Alignment
+    {
+        Left,
+        Rigth
     }
 }
