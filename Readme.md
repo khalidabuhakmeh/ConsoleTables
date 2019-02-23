@@ -16,8 +16,9 @@ static void Main(String[] args)
     var rows = Enumerable.Repeat(new Something(), 10);
 
     ConsoleTable
-       .From<Something>(rows)
-       .Write(Format.Alternative);
+        .From<Something>(rows)
+        .Configure(o => o.NumberAlignment = Alignment.Rigth)
+        .Write(Format.Alternative);
 
     Console.ReadKey();
 }
