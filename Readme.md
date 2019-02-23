@@ -55,7 +55,7 @@ FORMAT: Alternative:
 
 ## Sample Output (Screenshot)
 
-<img src="https://raw.github.com/khalidabuhakmeh/ConsoleTables/master/screenshot.PNG" alt="screenshot" />
+![screenshot](/screenshot.PNG)
 
 The MIT License (MIT)
 
