@@ -15,6 +15,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+  <PropertyGroup>
+    <MinVerMinimumMajorMinor>2.2</MinVerMinimumMajorMinor>
+  </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net40'">
     <PackageReference Include="System.Reflection.TypeExtensions">
       <Version>4.3.0</Version>
