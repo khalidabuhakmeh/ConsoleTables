@@ -1,0 +1,31 @@
+image: Visual Studio 2017
+version: '{build}'
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - master
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: dotnet --info
+# Run dotnet
+- ps: dotnet restore
+- ps: dotnet build -c Release
+- ps: dotnet test
+- ps: dotnet pack -c Release --version-suffix=$revision
+test: off
+artifacts:
+- path: '**\*.nupkg'
+  name: NuGet
+deploy:
+  provider: NuGet
+  server:                  # remove to push to NuGet.org
+  api_key:
+    secure: MJcgOa5NrhHuW69wVB2YH1XuSuUSSW3wN2SjltVrImJDjTkEUYk2lJCjbCvwMgf+
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
+  on:
+    branch: master
+    appveyor_repo_tag: true
