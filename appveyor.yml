@@ -11,7 +11,7 @@ build_script:
 - ps: dotnet --info
 # Run dotnet
 - ps: dotnet restore
-- ps: dotnet build
+- ps: dotnet build -c Release
 - ps: dotnet test
 - ps: dotnet pack -c Release --version-suffix=$revision
 test: off
