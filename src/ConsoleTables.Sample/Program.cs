@@ -38,11 +38,11 @@ namespace ConsoleTables.Sample
             rows = Enumerable.Repeat(new Something(), 0);
             ConsoleTable.From<Something>(rows).Write();
 
-            Console.WriteLine("\nNumberAlignment = Alignment.Rigth\n");
+            Console.WriteLine("\nNumberAlignment = Alignment.Right\n");
             rows = Enumerable.Repeat(new Something(), 2);
             ConsoleTable
                 .From(rows)
-                .Configure(o => o.NumberAlignment = Alignment.Rigth)
+                .Configure(o => o.NumberAlignment = Alignment.Right)
                 .Write();
 
             var noCount =

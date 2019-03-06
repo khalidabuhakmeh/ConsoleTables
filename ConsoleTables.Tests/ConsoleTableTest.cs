@@ -30,7 +30,7 @@ $@" -------------------
             var table = new ConsoleTable("one", "two", "three")
                 .AddRow(1, 2, 3)
                 .AddRow("this line should be longer", "yes it is", "oh")
-                .Configure(o => o.NumberAlignment = Alignment.Rigth)
+                .Configure(o => o.NumberAlignment = Alignment.Right)
                 .ToString();
 
             Assert.Equal(
@@ -54,7 +54,7 @@ $@" --------------------------------------------------
             };
             var table = ConsoleTable
                 .From(users)
-                .Configure(o => o.NumberAlignment = Alignment.Rigth)
+                .Configure(o => o.NumberAlignment = Alignment.Right)
                 .ToString();
 
             Assert.Equal(
@@ -76,7 +76,7 @@ $@" -------------------
             };
             var table = ConsoleTable
                 .From(users)
-                .Configure(o => o.NumberAlignment = Alignment.Rigth)
+                .Configure(o => o.NumberAlignment = Alignment.Right)
                 .ToMarkDownString();
 
             Assert.Equal(

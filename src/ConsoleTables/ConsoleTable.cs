@@ -90,7 +90,7 @@ namespace ConsoleTables
             // find the longest column by searching each row
             var columnLengths = ColumnLengths();
 
-            // set rigth alinment if is a number
+            // set right alinment if is a number
             var columnAlignment = Enumerable.Range(0, Columns.Count)
                 .Select(GetNumberAlignment)
                 .ToList();
@@ -204,7 +204,7 @@ namespace ConsoleTables
 
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
-            // set rigth alinment if is a number
+            // set right alinment if is a number
             var columnAlignment = Enumerable.Range(0, Columns.Count)
                 .Select(GetNumberAlignment)
                 .ToList();
@@ -218,7 +218,7 @@ namespace ConsoleTables
 
         private string GetNumberAlignment(int i)
         {
-            return Options.NumberAlignment == Alignment.Rigth
+            return Options.NumberAlignment == Alignment.Right
                     && ColumnTypes != null
                     && NumericTypes.Contains(ColumnTypes[i])
                 ? ""
@@ -295,6 +295,6 @@ namespace ConsoleTables
     public enum Alignment
     {
         Left,
-        Rigth
+        Right
     }
 }
