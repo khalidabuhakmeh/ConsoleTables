@@ -2,15 +2,18 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;net40</TargetFrameworks>
     <PackageId>ConsoleTables</PackageId>
-    <PackageVersion>2.2.0</PackageVersion>
-    <AssemblyVersion>2.2.0</AssemblyVersion>
-    <Version>2.2.0</Version>
+    <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</Description>
     <PackageProjectUrl>https://github.com/khalidabuhakmeh/ConsoleTables</PackageProjectUrl>
-    <PackageTags>console</PackageTags>
+    <PackageTags>consoletables,consoletable,console,table,output</PackageTags>
     <Authors>khalidabuhakmeh</Authors>
-    <PackageReleaseNotes>Fix issue with column being too long</PackageReleaseNotes>
+    <Copyright>Copyright © Khalid Abuhakmeh 2019</Copyright>
+    <PackageReleaseNotes>Add AppVeyor build and MinVer versioning</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <IsTestProject>false</IsTestProject>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net40'">
     <PackageReference Include="System.Reflection.TypeExtensions">
@@ -20,5 +23,19 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="1.0.0-beta.2">
+        <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="artifacts\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="artifacts\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="artifacts\**" />
   </ItemGroup>
 </Project>
