@@ -1,23 +1,34 @@
-version: '1.0.{build}'
 image: Visual Studio 2017
+version: '{build}'
+pull_requests:
+  do_not_increment_build_number: true
 branches:
   only:
   - master
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
-install:
-  # Install repo specific stuff here
-before_build:
-  # Display .NET Core version
-  - cmd: dotnet --version
-  # Display minimal restore text
-  - cmd: dotnet restore
-clone_depth: 1
-test_script:
-  # restore packages for our unit tests
-  - cmd: dotnet restore
-  - cmd: dotnet test
-on_finish :
-  # any cleanup in here
-deploy: off
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: dotnet --info
+# Run dotnet
+- ps: dotnet restore
+- ps: dotnet build -c Release
+- ps: dotnet test
+- ps: dotnet pack -c Release --version-suffix=$revision
+test: off
+artifacts:
+- path: '**\*.nupkg'
+  name: NuGet
+deploy:
+  provider: NuGet
+  server:                  # remove to push to NuGet.org
+  api_key:
+    secure: MJcgOa5NrhHuW69wVB2YH1XuSuUSSW3wN2SjltVrImJDjTkEUYk2lJCjbCvwMgf+
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
+  on:
+    branch: master
+    appveyor_repo_tag: true
