@@ -5,6 +5,9 @@ pull_requests:
 branches:
   only:
   - master
+init:
+  # Good practise, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
 nuget:
   disable_publish_on_pr: true
 build_script:

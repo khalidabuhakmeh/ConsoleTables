@@ -13,10 +13,19 @@ namespace ConsoleTables
         public IList<object[]> Rows { get; protected set; }
 
         public ConsoleTableOptions Options { get; protected set; }
+        public Type[] ColumnTypes { get; private set; }
+
+        public static HashSet<Type> NumericTypes = new HashSet<Type>
+        {
+            typeof(int),  typeof(double),  typeof(decimal),
+            typeof(long), typeof(short),   typeof(sbyte),
+            typeof(byte), typeof(ulong),   typeof(ushort),
+            typeof(uint), typeof(float)
+        };
 
         public ConsoleTable(params string[] columns)
-            :this(new ConsoleTableOptions { Columns = new List<string>(columns) })
-        {          
+            : this(new ConsoleTableOptions { Columns = new List<string>(columns) })
+        {
         }
 
         public ConsoleTable(ConsoleTableOptions options)
@@ -49,16 +58,27 @@ namespace ConsoleTables
             return this;
         }
 
+        public ConsoleTable Configure(Action<ConsoleTableOptions> action)
+        {
+            action(Options);
+            return this;
+        }
+
         public static ConsoleTable From<T>(IEnumerable<T> values)
         {
-            var table = new ConsoleTable();
+            var table = new ConsoleTable
+            {
+                ColumnTypes = GetColumnsType<T>().ToArray()
+            };
 
             var columns = GetColumns<T>();
-                
+
             table.AddColumn(columns);
 
-            foreach (var propertyValues in values.Select(value => columns.Select(column => GetColumnValue<T>(value, column) )))
-                table.AddRow(propertyValues.ToArray());
+            foreach (
+                var propertyValues
+                in values.Select(value => columns.Select(column => GetColumnValue<T>(value, column)))
+            ) table.AddRow(propertyValues.ToArray());
 
             return table;
         }
@@ -70,9 +90,14 @@ namespace ConsoleTables
             // find the longest column by searching each row
             var columnLengths = ColumnLengths();
 
+            // set right alinment if is a number
+            var columnAlignment = Enumerable.Range(0, Columns.Count)
+                .Select(GetNumberAlignment)
+                .ToList();
+
             // create the string format with padding
             var format = Enumerable.Range(0, Columns.Count)
-                .Select(i => " | {" + i + ",-" + columnLengths[i] + "}")
+                .Select(i => " | {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " |";
 
             // find the longest formatted line
@@ -179,11 +204,25 @@ namespace ConsoleTables
 
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
+            // set right alinment if is a number
+            var columnAlignment = Enumerable.Range(0, Columns.Count)
+                .Select(GetNumberAlignment)
+                .ToList();
+
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
             var format = (Enumerable.Range(0, Columns.Count)
-                .Select(i => " "+ delimiterStr + " {" + i + ",-" + columnLengths[i] + "}")
+                .Select(i => " " + delimiterStr + " {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " " + delimiterStr).Trim();
             return format;
+        }
+
+        private string GetNumberAlignment(int i)
+        {
+            return Options.NumberAlignment == Alignment.Right
+                    && ColumnTypes != null
+                    && NumericTypes.Contains(ColumnTypes[i])
+                ? ""
+                : "-";
         }
 
         private List<int> ColumnLengths()
@@ -219,7 +258,7 @@ namespace ConsoleTables
         }
 
         private static IEnumerable<string> GetColumns<T>()
-        {  
+        {
             return typeof(T).GetProperties().Select(x => x.Name).ToArray();
         }
 
@@ -227,12 +266,22 @@ namespace ConsoleTables
         {
             return typeof(T).GetProperty(column).GetValue(target, null);
         }
+
+        private static IEnumerable<Type> GetColumnsType<T>()
+        {
+            return typeof(T).GetProperties().Select(x => x.PropertyType).ToArray();
+        }
     }
 
     public class ConsoleTableOptions
     {
         public IEnumerable<string> Columns { get; set; } = new List<string>();
         public bool EnableCount { get; set; } = true;
+
+        /// <summary>
+        /// Enable only from a list of objects
+        /// </summary>
+        public Alignment NumberAlignment { get; set; } = Alignment.Left;
     }
 
     public enum Format
@@ -241,5 +290,11 @@ namespace ConsoleTables
         MarkDown = 1,
         Alternative = 2,
         Minimal = 3
+    }
+
+    public enum Alignment
+    {
+        Left,
+        Right
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
-using ConsoleTables;
 
 namespace ConsoleTables.Sample
 {
     class Program
     {
-        static void Main(String[] args)
+        static void Main(string[] args)
         {
             var table = new ConsoleTable("one", "two", "three");
             table.AddRow(1, 2, 3)
@@ -32,12 +31,19 @@ namespace ConsoleTables.Sample
 
             var rows = Enumerable.Repeat(new Something(), 10);
 
-            
+
 
             ConsoleTable.From<Something>(rows).Write();
 
             rows = Enumerable.Repeat(new Something(), 0);
             ConsoleTable.From<Something>(rows).Write();
+
+            Console.WriteLine("\nNumberAlignment = Alignment.Right\n");
+            rows = Enumerable.Repeat(new Something(), 2);
+            ConsoleTable
+                .From(rows)
+                .Configure(o => o.NumberAlignment = Alignment.Right)
+                .Write();
 
             var noCount =
             new ConsoleTable(new ConsoleTableOptions
@@ -64,5 +70,6 @@ namespace ConsoleTables.Sample
         public string Id { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
+        public int NumberOfChildren { get; set; }
     }
 }
