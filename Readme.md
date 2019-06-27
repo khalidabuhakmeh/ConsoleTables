@@ -17,7 +17,7 @@ static void Main(String[] args)
 
     ConsoleTable
         .From<Something>(rows)
-        .Configure(o => o.NumberAlignment = Alignment.Rigth)
+        .Configure(o => o.NumberAlignment = Alignment.Right)
         .Write(Format.Alternative);
 
     Console.ReadKey();
