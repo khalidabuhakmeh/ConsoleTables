@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Xunit;
 
 namespace ConsoleTables.Tests
@@ -84,6 +86,37 @@ $@"| Name      | Age |
 |-----------|-----|
 | Alexandre |  36 |
 ", table);
+        }
+
+        [Fact]
+        public void OutputShouldDefaultToConsoleOut()
+        {
+            var users = new List<User>
+            {
+                new User { Name = "Alexandre" , Age = 36 }
+            };
+
+            var table = ConsoleTable.From(users);
+
+            Assert.Equal(table.Options.OutputTo, Console.Out);
+        }
+
+        [Fact]
+        public void OutputShouldGoToConfiguredOutputWriter()
+        {
+            var users = new List<User>
+            {
+                new User { Name = "Alexandre" , Age = 36 }
+            };
+
+            var testWriter = new StringWriter();
+
+            ConsoleTable
+               .From(users)
+               .Configure(o => o.OutputTo = testWriter)
+               .Write();
+
+            Assert.NotEmpty(testWriter.ToString());
         }
 
         class User
