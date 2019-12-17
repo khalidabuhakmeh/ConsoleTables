@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -241,16 +242,16 @@ namespace ConsoleTables
             switch (format)
             {
                 case ConsoleTables.Format.Default:
-                    Console.WriteLine(ToString());
+                    Options.OutputTo.WriteLine(ToString());
                     break;
                 case ConsoleTables.Format.MarkDown:
-                    Console.WriteLine(ToMarkDownString());
+                    Options.OutputTo.WriteLine(ToMarkDownString());
                     break;
                 case ConsoleTables.Format.Alternative:
-                    Console.WriteLine(ToStringAlternative());
+                    Options.OutputTo.WriteLine(ToStringAlternative());
                     break;
                 case ConsoleTables.Format.Minimal:
-                    Console.WriteLine(ToMinimalString());
+                    Options.OutputTo.WriteLine(ToMinimalString());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
@@ -282,6 +283,11 @@ namespace ConsoleTables
         /// Enable only from a list of objects
         /// </summary>
         public Alignment NumberAlignment { get; set; } = Alignment.Left;
+
+        /// <summary>
+        /// The <see cref="TextWriter"/> to write to. Defaults to <see cref="Console.Out"/>.
+        /// </summary>
+        public TextWriter OutputTo { get; set; } = Console.Out;
     }
 
     public enum Format
