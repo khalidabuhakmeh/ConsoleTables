@@ -49,9 +49,14 @@ FORMAT: Alternative:
 +----------------------------+-----------+-------+
 | this line should be longer | yes it is | oh    |
 +----------------------------+-----------+-------+
+
+FORMAT: Minimal:
+
+one                         two        three
+--------------------------------------------
+1                           2          3
+this line should be longer  yes it is  oh
 ```
-
-
 
 ## Sample Output (Screenshot)
 
