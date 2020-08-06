@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -260,7 +261,7 @@ namespace ConsoleTables
 
         private static IEnumerable<string> GetColumns<T>()
         {
-            return typeof(T).GetProperties().Select(x => x.Name).ToArray();
+            return GetProperties<T>().Select(x => x.Name).ToArray();
         }
 
         private static object GetColumnValue<T>(object target, string column)
@@ -270,7 +271,15 @@ namespace ConsoleTables
 
         private static IEnumerable<Type> GetColumnsType<T>()
         {
-            return typeof(T).GetProperties().Select(x => x.PropertyType).ToArray();
+            return GetProperties<T>().Select(x => x.PropertyType).ToArray();
+        }
+
+        private static IEnumerable<PropertyInfo> GetProperties<T>()
+        {
+            return typeof(T).GetProperties().Where(x =>
+                x.GetCustomAttributes(typeof(BrowsableAttribute), inherit: true)
+                    .Cast<BrowsableAttribute>()
+                    .All(attr => attr.Browsable));
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Xunit;
 
@@ -123,6 +124,8 @@ $@"| Name      | Age |
         {
             public string Name { get; set; }
             public int Age { get; set; }
+
+            [Browsable(false)] public string NameAllCaps => Name.ToUpperInvariant();
         }
     }
 }
