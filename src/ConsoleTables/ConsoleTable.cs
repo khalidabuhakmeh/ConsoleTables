@@ -65,6 +65,8 @@ namespace ConsoleTables
             return this;
         }
 
+    
+
         public static ConsoleTable From<T>(IEnumerable<T> values)
         {
             var table = new ConsoleTable
@@ -203,6 +205,31 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
+        public string ToStringNew()
+        {
+            var builder = new StringBuilder();
+            var columnLengths = ColumnLengths();
+            var format = Format(columnLengths);
+            var columnHeaders = string.Format(format, Columns.ToArray());
+            var results = Rows.Select(row => string.Format(format, row)).ToList();
+            var divider = Regex.Replace(columnHeaders, @"[^|]", "*");
+            var dividerPlus = divider.Replace("|", "^");
+
+            builder.AppendLine(dividerPlus);
+            builder.AppendLine(columnHeaders);
+
+            foreach (var row in results)
+            {
+                builder.AppendLine(dividerPlus);
+                builder.AppendLine(row);
+            }
+            builder.AppendLine(dividerPlus);
+
+            return builder.ToString();
+        }
+
+
+
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
             // set right alinment if is a number
@@ -253,6 +280,10 @@ namespace ConsoleTables
                 case ConsoleTables.Format.Minimal:
                     Options.OutputTo.WriteLine(ToMinimalString());
                     break;
+                case ConsoleTables.Format.New:
+                    Options.OutputTo.WriteLine(ToStringNew());
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }
@@ -295,7 +326,8 @@ namespace ConsoleTables
         Default = 0,
         MarkDown = 1,
         Alternative = 2,
-        Minimal = 3
+        Minimal = 3,
+        New = 4
     }
 
     public enum Alignment
