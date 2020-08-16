@@ -7,25 +7,44 @@ namespace ConsoleTables.Sample
     {
         static void Main(string[] args)
         {
+            
             var table = new ConsoleTable("one", "two", "three");
             table.AddRow(1, 2, 3)
                  .AddRow("this line should be longer", "yes it is", "oh");
 
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("\nFORMAT: Default:\n");
             table.Write();
 
+            
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("\nFORMAT: MarkDown:\n");
             table.Write(Format.MarkDown);
 
+          
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nFORMAT: Alternative:\n");
             table.Write(Format.Alternative);
             Console.WriteLine();
 
+            
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nFORMAT: Minimal:\n");
             table.Write(Format.Minimal);
             Console.WriteLine();
 
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("\nFORMAT: NewFormat:\n");
+            table.Write(Format.New);
+            Console.WriteLine();
+
+
+
             table = new ConsoleTable("I've", "got", "nothing");
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
             table.Write();
             Console.WriteLine();
 
@@ -38,6 +57,7 @@ namespace ConsoleTables.Sample
             rows = Enumerable.Repeat(new Something(), 0);
             ConsoleTable.From<Something>(rows).Write();
 
+           
             Console.WriteLine("\nNumberAlignment = Alignment.Right\n");
             rows = Enumerable.Repeat(new Something(), 2);
             ConsoleTable
@@ -51,12 +71,15 @@ namespace ConsoleTables.Sample
                 Columns = new[] { "one", "two", "three" },
                 EnableCount = false
             });
-
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
             noCount.AddRow(1, 2, 3).Write();
 
             Console.ReadKey();
         }
     }
+
+    
 
     public class Something
     {
