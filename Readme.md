@@ -4,6 +4,7 @@ Have you ever just wanted to output flat structured POCO out to console? Sure yo
 
 ## Example usage
 ```csharp
+// using ConsoleTables;
 static void Main(String[] args)
 {
     var table = new ConsoleTable("one", "two", "three");
@@ -61,6 +62,41 @@ this line should be longer  yes it is  oh
 ## Sample Output (Screenshot)
 
 ![screenshot](/screenshot.PNG)
+
+## Adding it to your project with nuget
+
+**Package Manager**
+
+```sh
+Install-Package ConsoleTables -Version 2.4.2
+```
+
+**.NET CLI**
+
+```sh
+Install-Package ConsoleTables -Version 2.4.2
+```
+**PackageReference**
+
+```sh
+<PackageReference Include="ConsoleTables" Version="2.4.2" />
+```
+**Packet CLI**
+
+```sh
+paket add ConsoleTables --version 2.4.2
+```
+
+## Version History
+
+| Version       | Downloads    | Last updated  |
+| ------------- |--------------|---------------|
+| Version       |Downloads	   |Last updated   |
+| 2.4.2 	    |18,202 	   |4 months ago   |
+| 2.4.1 	    |42,442 	   |7 months ago   |
+| 2.4.0 	    |19,443 	   |12/18/2019     |
+| 2.3.0 	    |107,954 	   |3/20/2019 	   |
+| 2.2.4 	    |678           |3/6/2019       |
 
 The MIT License (MIT)
 
