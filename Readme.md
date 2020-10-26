@@ -74,7 +74,7 @@ Install-Package ConsoleTables -Version 2.4.2
 **.NET CLI**
 
 ```sh
-Install-Package ConsoleTables -Version 2.4.2
+dotnet add package ConsoleTables --version 2.4.2
 ```
 **PackageReference**
 
