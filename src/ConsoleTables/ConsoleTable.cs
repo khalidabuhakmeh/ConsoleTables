@@ -50,14 +50,29 @@ namespace ConsoleTables
 
             if (!Columns.Any())
                 throw new Exception("Please set the columns first");
-
-            if (Columns.Count != values.Length)
+            
+            List<object> newValues = new List<object>();
+            foreach (var value in values)
+            {
+                if (!(value is IEnumerable<object>)) 
+                {
+                    newValues.Add(value);
+                    continue;
+                }
+                foreach (var element in (IEnumerable<object>)value)
+                {
+                    newValues.Add(element);
+                }
+            }
+            
+            if (Columns.Count != newValues.Count)
                 throw new Exception(
-                    $"The number columns in the row ({Columns.Count}) does not match the values ({values.Length})");
+                    $"The number columns in the row ({Columns.Count}) does not match the values ({newValues.Count})");
 
-            Rows.Add(values);
+            Rows.Add(newValues.ToArray<object>());
             return this;
         }
+
 
         public ConsoleTable Configure(Action<ConsoleTableOptions> action)
         {

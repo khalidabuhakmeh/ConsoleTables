@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleTables.Sample
@@ -8,8 +9,10 @@ namespace ConsoleTables.Sample
         static void Main(string[] args)
         {
             var table = new ConsoleTable("one", "two", "three");
+
             table.AddRow(1, 2, 3)
-                 .AddRow("this line should be longer", "yes it is", "oh");
+                 .AddRow("this line should be longer", "yes it is", "oh")
+                 .AddRow("testValue", new List<string>() { "testValue1", "testValue2" });
 
             Console.WriteLine("\nFORMAT: Default:\n");
             table.Write();
