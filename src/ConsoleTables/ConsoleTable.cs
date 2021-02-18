@@ -54,12 +54,12 @@ namespace ConsoleTables
             List<object> newValues = new List<object>();
             foreach (var value in values)
             {
-                if (!(value is IEnumerable<object>)) 
+                if (!(value is IEnumerable<string>)) 
                 {
                     newValues.Add(value);
                     continue;
                 }
-                foreach (var element in (IEnumerable<object>)value)
+                foreach (var element in (IEnumerable<string>)value)
                 {
                     newValues.Add(element);
                 }
