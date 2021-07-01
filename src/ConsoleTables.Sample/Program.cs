@@ -9,7 +9,7 @@ namespace ConsoleTables.Sample
         {
             var table = new ConsoleTable("one", "two", "three");
             table.AddRow(1, 2, 3)
-                 .AddRow("this line should be longer", "yes it is", "oh");
+                 .AddRow("this line should be longer 哈哈哈哈", "yes it is", "oh");
 
             Console.WriteLine("\nFORMAT: Default:\n");
             table.Write();
