@@ -16,6 +16,8 @@ namespace ConsoleTables
         public ConsoleTableOptions Options { get; protected set; }
         public Type[] ColumnTypes { get; private set; }
 
+        public IList<string> Formats { get; private set; }
+
         public static HashSet<Type> NumericTypes = new HashSet<Type>
         {
             typeof(int),  typeof(double),  typeof(decimal),
@@ -96,20 +98,22 @@ namespace ConsoleTables
                 .Select(GetNumberAlignment)
                 .ToList();
 
-            // create the string format with padding
+            // create the string format with padding ; just use for maxRowLength
             var format = Enumerable.Range(0, Columns.Count)
                 .Select(i => " | {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " |";
 
+            SetFormats(ColumnLengths(), columnAlignment);
+
             // find the longest formatted line
             var maxRowLength = Math.Max(0, Rows.Any() ? Rows.Max(row => string.Format(format, row).Length) : 0);
-            var columnHeaders = string.Format(format, Columns.ToArray());
+            var columnHeaders = string.Format(Formats[0], Columns.ToArray());
 
             // longest line is greater of formatted columnHeader and longest row
             var longestLine = Math.Max(maxRowLength, columnHeaders.Length);
 
             // add each row
-            var results = Rows.Select(row => string.Format(format, row)).ToList();
+            var results = Rows.Select((row, i) => string.Format(Formats[i + 1], row)).ToList();
 
             // create the divider
             var divider = " " + string.Join("", Enumerable.Repeat("-", longestLine - 1)) + " ";
@@ -134,6 +138,35 @@ namespace ConsoleTables
             return builder.ToString();
         }
 
+
+        private void SetFormats(List<int> columnLengths, List<string> columnAlignment)
+        {
+            var allLines = new List<object[]>();
+            allLines.Add(Columns.ToArray());
+            allLines.AddRange(Rows);
+
+            Formats = allLines.Select(d =>
+            {
+                return Enumerable.Range(0, Columns.Count)
+                    .Select(i =>
+                    {
+                        var value = d[i]?.ToString() ?? "";
+                        var length = columnLengths[i] - (GetTextWidth(value) - value.Length);
+                        return " | {" + i + "," + columnAlignment[i] + length + "}";
+                    })
+                    .Aggregate((s, a) => s + a) + " |";
+            }).ToList();
+        }
+
+        public static int GetTextWidth(string value)
+        {
+            if (value == null)
+                return 0;
+
+            var length = value.ToCharArray().Sum(c => c > 127 ? 2 : 1);
+            return length;
+        }
+
         public string ToMarkDownString()
         {
             return ToMarkDownString('|');
@@ -150,10 +183,10 @@ namespace ConsoleTables
             var format = Format(columnLengths, delimiter);
 
             // find the longest formatted line
-            var columnHeaders = string.Format(format, Columns.ToArray());
+            var columnHeaders = string.Format(Formats[0].TrimStart(), Columns.ToArray());
 
             // add each row
-            var results = Rows.Select(row => string.Format(format, row)).ToList();
+            var results = Rows.Select((row, i) => string.Format(Formats[i + 1].TrimStart(), row)).ToList();
 
             // create the divider
             var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
@@ -181,10 +214,10 @@ namespace ConsoleTables
             var format = Format(columnLengths);
 
             // find the longest formatted line
-            var columnHeaders = string.Format(format, Columns.ToArray());
+            var columnHeaders = string.Format(Formats[0].TrimStart(), Columns.ToArray());
 
             // add each row
-            var results = Rows.Select(row => string.Format(format, row)).ToList();
+            var results = Rows.Select((row, i) => string.Format(Formats[i + 1].TrimStart(), row)).ToList();
 
             // create the divider
             var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
@@ -210,6 +243,8 @@ namespace ConsoleTables
                 .Select(GetNumberAlignment)
                 .ToList();
 
+            SetFormats(columnLengths, columnAlignment);
+
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
             var format = (Enumerable.Range(0, Columns.Count)
                 .Select(i => " " + delimiterStr + " {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
@@ -232,7 +267,7 @@ namespace ConsoleTables
                 .Select((t, i) => Rows.Select(x => x[i])
                     .Union(new[] { Columns[i] })
                     .Where(x => x != null)
-                    .Select(x => x.ToString().Length).Max())
+                    .Select(x => x.ToString().ToCharArray().Sum(c => c > 127 ? 2 : 1)).Max())
                 .ToList();
             return columnLengths;
         }
