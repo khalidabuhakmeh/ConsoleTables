@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;netstandard1.3;net40</TargetFrameworks>
+    <TargetFrameworks></TargetFrameworks>
     <PackageId>ConsoleTables</PackageId>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Allows you to print out objects in a table view in a console application. Should be helpful for the diehard console fans.</Description>
