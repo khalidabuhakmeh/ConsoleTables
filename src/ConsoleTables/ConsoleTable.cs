@@ -65,6 +65,36 @@ namespace ConsoleTables
             return this;
         }
 
+
+        public static ConsoleTable FromDictionary(Dictionary<string, Dictionary<string, object>> values)
+        {
+            var table = new ConsoleTable();
+
+            var columNames = values.SelectMany(x => x.Value.Keys).Distinct().ToList();
+            columNames.Insert(0,"");
+            table.AddColumn(columNames);
+            foreach (var row in values)
+            {
+                List<object> r = new List<object>();
+                r.Add(row.Key);
+                foreach (var columName in columNames.Skip(1))
+                {
+                    if (row.Value.ContainsKey(columName))
+                    {
+                        r.Add(row.Value[columName]);
+                    }
+                    else
+                    {
+                        r.Add("");
+                    }
+                }
+
+                table.AddRow(r.Cast<object>().ToArray());
+            }
+
+            return table;
+        }
+
         public static ConsoleTable From<T>(IEnumerable<T> values)
         {
             var table = new ConsoleTable

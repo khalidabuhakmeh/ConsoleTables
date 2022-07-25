@@ -1,12 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleTables.Sample
 {
     class Program
     {
+        
+        static void TestDictionaryTable()
+        {
+            Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>()
+            {
+                {"A", new Dictionary<string, object>()
+                {
+                    { "A", true },
+                    { "B", false },
+                    { "C", true },
+                }},
+                {"B", new Dictionary<string, object>()
+                {
+                    { "A", false },
+                    { "B", true },
+                    { "C", false },
+                }},
+                {"C", new Dictionary<string, object>()
+                {
+                    { "A", false },
+                    { "B", false },
+                    { "C", true },
+                }}
+            };
+            var table = ConsoleTable.FromDictionary(data);
+
+            Console.WriteLine(table.ToString());
+
+        }
+        
         static void Main(string[] args)
         {
+            TestDictionaryTable();
             var table = new ConsoleTable("one", "two", "three");
             table.AddRow(1, 2, 3)
                  .AddRow("this line should be longer", "yes it is", "oh");

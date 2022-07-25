@@ -119,6 +119,41 @@ $@"| Name      | Age |
             Assert.NotEmpty(testWriter.ToString());
         }
 
+        [Fact]
+        public void TestDictionaryTable()
+        {
+            Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>()
+            {
+                {"A", new Dictionary<string, object>()
+                {
+                    { "A", true },
+                    { "B", false },
+                    { "C", true },
+                }},
+                {"B", new Dictionary<string, object>()
+                {
+                    { "A", false },
+                    { "B", true },
+                    { "C", false },
+                }},
+                {"C", new Dictionary<string, object>()
+                {
+                    { "A", false },
+                    { "B", false },
+                    { "C", true },
+                }}
+            };
+            var table = ConsoleTable.FromDictionary(data);
+
+            Assert.Equal(@"|   | A     | B     | C     |
+|---|-------|-------|-------|
+| A | True  | False | True  |
+| B | False | True  | False |
+| C | False | False | True  |
+",table.ToMarkDownString());
+
+        }
+
         class User
         {
             public string Name { get; set; }
