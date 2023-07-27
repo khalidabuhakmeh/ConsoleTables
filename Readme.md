@@ -61,7 +61,7 @@ this line should be longer  yes it is  oh
 
 ## Sample Output (Screenshot)
 
-![screenshot](/screenshot.PNG)
+![screenshot](https://github.com/khalidabuhakmeh/ConsoleTables/blob/master/screenshot.PNG?raw=true)
 
 ## Adding it to your project with nuget
 

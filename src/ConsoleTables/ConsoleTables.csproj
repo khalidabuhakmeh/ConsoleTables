@@ -14,9 +14,15 @@
     <IsTestProject>false</IsTestProject>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <IsPackable>true</IsPackable>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,15 +32,6 @@
   <PropertyGroup>
     <MinVerMinimumMajorMinor>2.2</MinVerMinimumMajorMinor>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net40'">
-    <PackageReference Include="System.Reflection.TypeExtensions">
-      <Version>4.7.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MinVer" Version="4.3.0">
         <PrivateAssets>all</PrivateAssets>
@@ -48,5 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="artifacts\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Readme.md" Pack="true" PackagePath="">
+      <Link>Properties\Readme.md</Link>
+    </None>
+    <None Include="..\..\icon.png" Pack="true" PackagePath="">
+      <Link>Properties\icon.png</Link>
+    </None>
   </ItemGroup>
 </Project>
