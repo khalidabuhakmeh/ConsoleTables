@@ -9,15 +9,15 @@ namespace ConsoleTables
 {
     public class ConsoleTable
     {
-        public IList<object> Columns { get; set; }
-        public IList<object[]> Rows { get; protected set; }
+        public IList<object> Columns { get; }
+        public IList<object[]> Rows { get; }
 
-        public ConsoleTableOptions Options { get; protected set; }
+        public ConsoleTableOptions Options { get; }
         public Type[] ColumnTypes { get; private set; }
 
         public IList<string> Formats { get; private set; }
 
-        public static HashSet<Type> NumericTypes = new HashSet<Type>
+        public static readonly HashSet<Type> NumericTypes = new HashSet<Type>
         {
             typeof(int),  typeof(double),  typeof(decimal),
             typeof(long), typeof(short),   typeof(sbyte),
@@ -76,18 +76,10 @@ namespace ConsoleTables
             table.AddColumn(columNames);
             foreach (var row in values)
             {
-                List<object> r = new List<object>();
-                r.Add(row.Key);
+                var r = new List<object> { row.Key };
                 foreach (var columName in columNames.Skip(1))
                 {
-                    if (row.Value.ContainsKey(columName))
-                    {
-                        r.Add(row.Value[columName]);
-                    }
-                    else
-                    {
-                        r.Add("");
-                    }
+                    r.Add(row.Value.TryGetValue(columName, out var value) ? value : "");
                 }
 
                 table.AddRow(r.Cast<object>().ToArray());
@@ -103,7 +95,7 @@ namespace ConsoleTables
                 ColumnTypes = GetColumnsType<T>().ToArray()
             };
 
-            var columns = GetColumns<T>();
+            var columns = GetColumns<T>().ToList();
 
             table.AddColumn(columns);
 
@@ -209,7 +201,7 @@ namespace ConsoleTables
             var columnLengths = ColumnLengths();
 
             // create the string format with padding
-            var format = Format(columnLengths, delimiter);
+            _ = Format(columnLengths, delimiter);
 
             // find the longest formatted line
             var columnHeaders = string.Format(Formats[0].TrimStart(), Columns.ToArray());
@@ -218,7 +210,7 @@ namespace ConsoleTables
             var results = Rows.Select((row, i) => string.Format(Formats[i + 1].TrimStart(), row)).ToList();
 
             // create the divider
-            var divider = Regex.Replace(columnHeaders, @"[^|]", "-");
+            var divider = Regex.Replace(columnHeaders, "[^|]", "-");
 
             builder.AppendLine(columnHeaders);
             builder.AppendLine(divider);

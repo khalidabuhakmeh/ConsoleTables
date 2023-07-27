@@ -36,7 +36,7 @@ namespace ConsoleTables.Tests
         {
             var users = new List<User>
             {
-                new User { Name = "Alexandre" , Age = 36 }
+                new() { Name = "Alexandre" , Age = 36 }
             };
             var table = ConsoleTable.From(users).ToString();
 
@@ -76,7 +76,7 @@ $@" --------------------------------------------------
         {
             var users = new List<User>
             {
-                new User { Name = "Alexandre" , Age = 36 }
+                new() { Name = "Alexandre" , Age = 36 }
             };
             var table = ConsoleTable
                 .From(users)
@@ -98,7 +98,7 @@ $@" -------------------
         {
             var users = new List<User>
             {
-                new User { Name = "Alexandre" , Age = 36 }
+                new() { Name = "Alexandre" , Age = 36 }
             };
             var table = ConsoleTable
                 .From(users)
@@ -117,7 +117,7 @@ $@"| Name      | Age |
         {
             var users = new List<User>
             {
-                new User { Name = "Alexandre" , Age = 36 }
+                new() { Name = "Alexandre" , Age = 36 }
             };
 
             var table = ConsoleTable.From(users);
@@ -130,7 +130,7 @@ $@"| Name      | Age |
         {
             var users = new List<User>
             {
-                new User { Name = "Alexandre" , Age = 36 }
+                new() { Name = "Alexandre" , Age = 36 }
             };
 
             var testWriter = new StringWriter();

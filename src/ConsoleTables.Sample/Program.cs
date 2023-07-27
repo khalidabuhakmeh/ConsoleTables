@@ -2,106 +2,94 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ConsoleTables.Sample
+namespace ConsoleTables.Sample;
+
+static class Program
 {
-    class Program
+    static void TestDictionaryTable()
     {
-        
-        static void TestDictionaryTable()
+        Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>()
         {
-            Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>()
+            {"A", new Dictionary<string, object>()
             {
-                {"A", new Dictionary<string, object>()
-                {
-                    { "A", true },
-                    { "B", false },
-                    { "C", true },
-                }},
-                {"B", new Dictionary<string, object>()
-                {
-                    { "A", false },
-                    { "B", true },
-                    { "C", false },
-                }},
-                {"C", new Dictionary<string, object>()
-                {
-                    { "A", false },
-                    { "B", false },
-                    { "C", true },
-                }}
-            };
-            var table = ConsoleTable.FromDictionary(data);
+                { "A", true },
+                { "B", false },
+                { "C", true },
+            }},
+            {"B", new Dictionary<string, object>()
+            {
+                { "A", false },
+                { "B", true },
+                { "C", false },
+            }},
+            {"C", new Dictionary<string, object>()
+            {
+                { "A", false },
+                { "B", false },
+                { "C", true },
+            }}
+        };
+        var table = ConsoleTable.FromDictionary(data);
 
-            Console.WriteLine(table.ToString());
-
-        }
+        Console.WriteLine(table.ToString());
+    }
         
-        static void Main(string[] args)
-        {
-            TestDictionaryTable();
-            var table = new ConsoleTable("one", "two", "three");
-            table.AddRow(1, 2, 3)
-                 .AddRow("this line should be longer 哈哈哈哈", "yes it is", "oh");
+    static void Main(string[] args)
+    {
+        TestDictionaryTable();
+        var table = new ConsoleTable("one", "two", "three");
+        table.AddRow(1, 2, 3)
+            .AddRow("this line should be longer 哈哈哈哈", "yes it is", "oh");
 
-            Console.WriteLine("\nFORMAT: Default:\n");
-            table.Write();
+        Console.WriteLine("\nFORMAT: Default:\n");
+        table.Write();
 
-            Console.WriteLine("\nFORMAT: MarkDown:\n");
-            table.Write(Format.MarkDown);
+        Console.WriteLine("\nFORMAT: MarkDown:\n");
+        table.Write(Format.MarkDown);
 
-            Console.WriteLine("\nFORMAT: Alternative:\n");
-            table.Write(Format.Alternative);
-            Console.WriteLine();
+        Console.WriteLine("\nFORMAT: Alternative:\n");
+        table.Write(Format.Alternative);
+        Console.WriteLine();
 
-            Console.WriteLine("\nFORMAT: Minimal:\n");
-            table.Write(Format.Minimal);
-            Console.WriteLine();
+        Console.WriteLine("\nFORMAT: Minimal:\n");
+        table.Write(Format.Minimal);
+        Console.WriteLine();
 
-            table = new ConsoleTable("I've", "got", "nothing");
-            table.Write();
-            Console.WriteLine();
+        table = new ConsoleTable("I've", "got", "nothing");
+        table.Write();
+        Console.WriteLine();
 
-            var rows = Enumerable.Repeat(new Something(), 10);
+        var rows = Enumerable.Repeat(new Something(), 10);
 
+        ConsoleTable.From(rows).Write();
 
+        rows = Enumerable.Repeat(new Something(), 0);
+        ConsoleTable.From(rows).Write();
 
-            ConsoleTable.From<Something>(rows).Write();
+        Console.WriteLine("\nNumberAlignment = Alignment.Right\n");
+        rows = Enumerable.Repeat(new Something(), 2);
+        ConsoleTable
+            .From(rows)
+            .Configure(o => o.NumberAlignment = Alignment.Right)
+            .Write();
 
-            rows = Enumerable.Repeat(new Something(), 0);
-            ConsoleTable.From<Something>(rows).Write();
-
-            Console.WriteLine("\nNumberAlignment = Alignment.Right\n");
-            rows = Enumerable.Repeat(new Something(), 2);
-            ConsoleTable
-                .From(rows)
-                .Configure(o => o.NumberAlignment = Alignment.Right)
-                .Write();
-
-            var noCount =
+        var noCount =
             new ConsoleTable(new ConsoleTableOptions
             {
                 Columns = new[] { "one", "two", "three" },
                 EnableCount = false
             });
 
-            noCount.AddRow(1, 2, 3).Write();
+        noCount.AddRow(1, 2, 3).Write();
 
-            Console.ReadKey();
-        }
+        Console.ReadKey();
     }
+}
 
-    public class Something
-    {
-        public Something()
-        {
-            Id = Guid.NewGuid().ToString("N");
-            Name = "Khalid Abuhkameh";
-            Date = DateTime.Now;
-        }
-
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public DateTime Date { get; set; }
-        public int NumberOfChildren { get; set; }
-    }
+public class Something
+{
+    public string Id { get; set; } = Guid.NewGuid().ToString("N");
+    public string Name { get; set; } = "Khalid Abuhkameh";
+    public DateTime Date { get; set; } = DateTime.Now;
+    public int NumberOfChildren { get; set; }
 }
