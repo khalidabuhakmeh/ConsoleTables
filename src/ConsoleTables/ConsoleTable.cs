@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -205,7 +204,7 @@ namespace ConsoleTables
 
         private string Format(List<int> columnLengths, char delimiter = '|')
         {
-            // set right alinment if is a number
+            // set right alignment if is a number
             var columnAlignment = Enumerable.Range(0, Columns.Count)
                 .Select(GetNumberAlignment)
                 .ToList();
@@ -265,7 +264,7 @@ namespace ConsoleTables
 
         private static object GetColumnValue<T>(object target, string column)
         {
-            return typeof(T).GetProperty(column).GetValue(target, null);
+            return typeof(T).GetProperty(column)?.GetValue(target, null);
         }
 
         private static IEnumerable<Type> GetColumnsType<T>()
