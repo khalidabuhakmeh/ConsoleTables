@@ -8,6 +8,30 @@ namespace ConsoleTables.Tests
     public class ConsoleTableTest
     {
         [Fact]
+        public void ShouldAccountForUnicodeCharacters()
+        {
+            var table = new ConsoleTable("one", "two", "three")
+                .AddRow(1, 2, 3)
+                .AddRow("this line should be longer 哈哈哈哈", "yes it is", "oh")
+                .ToString();
+            
+            Assert.Equal(
+                """
+                 ----------------------------------------------------------- 
+                 | one                                 | two       | three |
+                 ----------------------------------------------------------- 
+                 | 1                                   | 2         | 3     |
+                 ----------------------------------------------------------- 
+                 | this line should be longer 哈哈哈哈 | yes it is | oh    |
+                 ----------------------------------------------------------- 
+
+                 Count: 2
+                """,
+                table
+            );
+        }
+        
+        [Fact]
         public void ShouldBeToStringFromList()
         {
             var users = new List<User>

@@ -206,12 +206,6 @@ namespace ConsoleTables
         {
             var builder = new StringBuilder();
 
-            // find the longest column by searching each row
-            var columnLengths = ColumnLengths();
-
-            // create the string format with padding
-            var format = Format(columnLengths);
-
             // find the longest formatted line
             var columnHeaders = string.Format(Formats[0].TrimStart(), Columns.ToArray());
 
