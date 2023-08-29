@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -103,6 +104,27 @@ namespace ConsoleTables
                 var propertyValues
                 in values.Select(value => columns.Select(column => GetColumnValue<T>(value, column)))
             ) table.AddRow(propertyValues.ToArray());
+
+            return table;
+        }
+
+        public static ConsoleTable From(DataTable dataTable)
+        {
+            var table = new ConsoleTable();
+
+            var columns = dataTable.Columns
+                .Cast<DataColumn>()
+                .Select(x => x.ColumnName)
+                .ToList();
+
+            table.AddColumn(columns);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var items = row.ItemArray.Select(x => x is byte[] data ? Convert.ToBase64String(data) : x.ToString())
+                    .ToArray();
+                table.AddRow(items);
+            }
 
             return table;
         }

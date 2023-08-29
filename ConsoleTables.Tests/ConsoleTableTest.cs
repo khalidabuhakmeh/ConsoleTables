@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using Xunit;
 
@@ -174,6 +175,25 @@ $@"| Name      | Age |
 | A | True  | False | True  |
 | B | False | True  | False |
 | C | False | False | True  |
+",table.ToMarkDownString());
+
+        }
+        [Fact]
+        public void TestDataTable()
+        {
+            DataTable data = new DataTable();
+            data.Columns.Add("A", typeof(bool));
+            data.Columns.Add("B", typeof(bool));
+            data.Columns.Add("C", typeof(bool));
+            data.Rows.Add(true, false, true);
+            data.Rows.Add(false, true, false);
+            data.Rows.Add(false, false, true);
+            var table = ConsoleTable.From(data);
+            Assert.Equal(@"| A     | B     | C     |
+|-------|-------|-------|
+| True  | False | True  |
+| False | True  | False |
+| False | False | True  |
 ",table.ToMarkDownString());
 
         }
