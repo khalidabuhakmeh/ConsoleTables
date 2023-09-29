@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -72,7 +72,7 @@ namespace ConsoleTables
             var table = new ConsoleTable();
 
             var columNames = values.SelectMany(x => x.Value.Keys).Distinct().ToList();
-            columNames.Insert(0,"");
+            columNames.Insert(0, "");
             table.AddColumn(columNames);
             foreach (var row in values)
             {
@@ -225,31 +225,31 @@ namespace ConsoleTables
         }
 
         public string ToStringAlternative()
-{
-    var builder = new StringBuilder();
+        {
+            var builder = new StringBuilder();
 
-    // find the longest formatted line
-    var columnHeaders = string.Format(Formats[0].TrimStart(), Columns.ToArray());
+            // find the longest formatted line
+            var columnHeaders = string.Format(Formats[0].TrimStart(), Columns.ToArray());
 
-    // add each row
-    var results = Rows.Select((row, i) => string.Format(Formats[i + 1].TrimStart(), row)).ToList();
+            // add each row
+            var results = Rows.Select((row, i) => string.Format(Formats[i + 1].TrimStart(), row)).ToList();
 
-    // create the divider
-    var divider = Regex.Replace(columnHeaders, "[^| ]", "-");
-    var dividerPlus = divider.Replace("|", "+");
+            // create the divider
+            var divider = Regex.Replace(columnHeaders, "[^| ]", "-");
+            var dividerPlus = divider.Replace("|", "+");
 
-    builder.AppendLine(dividerPlus);
-    builder.AppendLine(columnHeaders);
+            builder.AppendLine(dividerPlus);
+            builder.AppendLine(columnHeaders);
 
-    foreach (var row in results)
-    {
-        builder.AppendLine(dividerPlus);
-        builder.AppendLine(row);
-    }
-    builder.AppendLine(dividerPlus);
+            foreach (var row in results)
+            {
+                builder.AppendLine(dividerPlus);
+                builder.AppendLine(row);
+            }
+            builder.AppendLine(dividerPlus);
 
-    return builder.ToString();
-}
+            return builder.ToString();
+        }
 
 
         private string Format(List<int> columnLengths, char delimiter = '|')
@@ -290,6 +290,8 @@ namespace ConsoleTables
 
         public void Write(Format format = ConsoleTables.Format.Default)
         {
+            SetFormats(ColumnLengths(), Enumerable.Range(0, Columns.Count).Select(GetNumberAlignment).ToList());
+
             switch (format)
             {
                 case ConsoleTables.Format.Default:
