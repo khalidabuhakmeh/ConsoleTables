@@ -98,6 +98,13 @@ $@" --------------
         }
 
         [Fact]
+        public void TestGetTextWidth()
+        {
+            Assert.Equal(3, ConsoleTable.GetTextWidth("abc"));
+            Assert.Equal(3, ConsoleTable.GetTextWidth("äöü"));
+        }
+
+        [Fact]
         public void NumberShouldBeRightAligned()
         {
             var users = new List<User>
