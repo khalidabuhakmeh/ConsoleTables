@@ -73,6 +73,31 @@ $@" --------------------------------------------------
         }
 
         [Fact]
+        public void SpecialCharactersShouldNotBreakTable()
+        {
+            var users = new List<User>
+            {
+                new() { Name = "Rene", Age = 59 },
+                new() { Name = "Otto", Age = 52 }
+            };
+            var table = ConsoleTable
+                .From(users)
+                .Configure(o => o.NumberAlignment = Alignment.Right)
+                .ToString();
+
+            Assert.Equal(
+$@" -------------- 
+ | Name | Age |
+ -------------- 
+ | Rene |  59 |
+ -------------- 
+ | Otto |  52 |
+ -------------- 
+
+ Count: 2", table);
+        }
+
+        [Fact]
         public void NumberShouldBeRightAligned()
         {
             var users = new List<User>
