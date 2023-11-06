@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Wcwidth;
 
 namespace ConsoleTables
 {
@@ -206,7 +207,7 @@ namespace ConsoleTables
             if (value == null)
                 return 0;
 
-            var length = value.ToCharArray().Sum(c => c > 127 ? 2 : 1);
+            var length = value.ToCharArray().Sum(c => UnicodeCalculator.GetWidth(c));
             return length;
         }
 

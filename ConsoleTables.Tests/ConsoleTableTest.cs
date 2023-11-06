@@ -102,6 +102,7 @@ $@" --------------
         {
             Assert.Equal(3, ConsoleTable.GetTextWidth("abc"));
             Assert.Equal(3, ConsoleTable.GetTextWidth("äöü"));
+            Assert.Equal(4, ConsoleTable.GetTextWidth("René"));
         }
 
         [Fact]
