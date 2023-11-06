@@ -306,7 +306,7 @@ namespace ConsoleTables
                 .Select((t, i) => Rows.Select(x => x[i])
                     .Union(new[] { Columns[i] })
                     .Where(x => x != null)
-                    .Select(x => x.ToString().ToCharArray().Sum(c => c > 127 ? 2 : 1)).Max())
+                    .Select(x => x.ToString().ToCharArray().Sum(c => UnicodeCalculator.GetWidth(c))).Max())
                 .ToList();
             return columnLengths;
         }
