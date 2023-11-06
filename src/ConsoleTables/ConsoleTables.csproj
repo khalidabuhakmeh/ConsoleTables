@@ -29,6 +29,10 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Wcwidth" Version="1.0.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <MinVerMinimumMajorMinor>2.2</MinVerMinimumMajorMinor>
   </PropertyGroup>
