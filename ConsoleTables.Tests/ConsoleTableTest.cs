@@ -231,6 +231,22 @@ $@"| Name      | Age |
 
         }
 
+        [Fact]
+        public void TestMinimalFormating()
+        {
+            var table = new ConsoleTable("one", "two", "three")
+                .AddRow(1, 2, 3)
+                .AddRow("this line should be longer 哈哈哈哈", "yes it is", "oh")
+                .ToMinimalString();
+            Assert.Equal("""
+                         one                                  two        three 
+                         ------------------------------------------------------
+                         1                                    2          3     
+                         this line should be longer 哈哈哈哈  yes it is  oh    
+
+                         """, table);
+        }
+
         class User
         {
             public string Name { get; set; }
