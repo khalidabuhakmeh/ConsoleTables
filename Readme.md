@@ -1,4 +1,4 @@
-# ConsoleTable
+# ConsoleTables
 
 Have you ever just wanted to output flat structured POCO out to console? Sure you have! This class will let you print a nicely formatted table right to your console as easily as possible.
 
