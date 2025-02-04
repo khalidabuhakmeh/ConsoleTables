@@ -36,29 +36,11 @@ namespace ConsoleTables.Sample
             table.AddRow(1, 2, 3)
                  .AddRow("this line should be longer 哈哈哈哈", "yes it is", "oh");
 
-            Console.WriteLine("\nFORMAT: Default:\n");
             table.Write();
-
-            Console.WriteLine("\nFORMAT: MarkDown:\n");
-            table.Write(Format.MarkDown);
-
-            Console.WriteLine("\nFORMAT: Alternative:\n");
-            table.Write(Format.Alternative);
-            Console.WriteLine();
-
-            Console.WriteLine("\nFORMAT: Minimal:\n");
-            table.Write();
-            Console.WriteLine();
-
-            table = new ConsoleTable("I've", "got", "nothing");
-            table.Write();
-            Console.WriteLine();
         }
 
         static void ConfigureAlignment()
         {
-            Console.WriteLine("\nNumberAlignment = Alignment.Right\n");
-
             var rows = Enumerable.Repeat(new Something(), 2);
             ConsoleTable.From(rows)
                 .Configure(o => o.NumberAlignment = Alignment.Right)
@@ -77,15 +59,15 @@ namespace ConsoleTables.Sample
         }
     }
 
-    public class TableData
+    public class Something
     {
-        public string Key { get; }
-        public Dictionary<string, object> Values { get; }
+        public string Id { get; } = Guid.NewGuid().ToString("N");
+        public string Name { get; private set; } = "Khalid Abuhkameh";
+        public DateTime Date { get; }
 
-        public TableData(string key, Dictionary<string, object> values)
+        public Something()
         {
-            Key = key;
-            Values = values;
+            Date = DateTime.UtcNow;
         }
     }
 }
