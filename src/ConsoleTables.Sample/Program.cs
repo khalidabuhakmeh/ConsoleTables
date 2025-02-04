@@ -18,14 +18,15 @@ namespace ConsoleTables.Sample
 
         static void TestDictionaryTable()
         {
-            Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>()
+            var data = new List<TableData>
             {
-                {"A", new Dictionary<string, object>() { { "A", true }, { "B", false }, { "C", true } }},
-                {"B", new Dictionary<string, object>() { { "A", false }, { "B", true }, { "C", false } }},
-                {"C", new Dictionary<string, object>() { { "A", false }, { "B", false }, { "C", true } }}
+                new TableData("A", new Dictionary<string, object> { { "A", true }, { "B", false }, { "C", true } }),
+                new TableData("B", new Dictionary<string, object> { { "A", false }, { "B", true }, { "C", false } }),
+                new TableData("C", new Dictionary<string, object> { { "A", false }, { "B", false }, { "C", true } })
             };
 
-            var table = ConsoleTable.FromDictionary(data);
+            var dictionary = data.ToDictionary(d => d.Key, d => d.Values);
+            var table = ConsoleTable.FromDictionary(dictionary);
             Console.WriteLine(table.ToString());
         }
 
@@ -73,6 +74,18 @@ namespace ConsoleTables.Sample
             });
 
             noCount.AddRow(1, 2, 3).Write();
+        }
+    }
+
+    public class TableData
+    {
+        public string Key { get; }
+        public Dictionary<string, object> Values { get; }
+
+        public TableData(string key, Dictionary<string, object> values)
+        {
+            Key = key;
+            Values = values;
         }
     }
 }
