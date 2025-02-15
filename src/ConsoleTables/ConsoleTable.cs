@@ -162,8 +162,11 @@ namespace ConsoleTables
             // create the divider
             var divider = " " + string.Join("", Enumerable.Repeat("-", longestLine - 1)) + " ";
 
-            builder.AppendLine(divider);
-            builder.AppendLine(columnHeaders);
+			if(Options.IncludeHeaderRow)
+			{
+				builder.AppendLine(divider);
+				builder.AppendLine(columnHeaders);
+			}
 
             foreach (var row in results)
             {
@@ -235,8 +238,13 @@ namespace ConsoleTables
             // create the divider
             var divider = Regex.Replace(columnHeaders, "[^|]", "-");
 
-            builder.AppendLine(columnHeaders);
-            builder.AppendLine(divider);
+
+			if (Options.IncludeHeaderRow)
+			{
+				builder.AppendLine(columnHeaders);
+				builder.AppendLine(divider);
+			}
+
             results.ForEach(row => builder.AppendLine(row));
 
             return builder.ToString();
@@ -261,8 +269,11 @@ namespace ConsoleTables
             var divider = Regex.Replace(columnHeaders, "[^| ]", "-");
             var dividerPlus = divider.Replace("|", "+");
 
-            builder.AppendLine(dividerPlus);
-            builder.AppendLine(columnHeaders);
+			if (Options.IncludeHeaderRow)
+			{
+				builder.AppendLine(dividerPlus);
+				builder.AppendLine(columnHeaders);
+			}
 
             foreach (var row in results)
             {
@@ -364,9 +375,12 @@ namespace ConsoleTables
         /// The <see cref="TextWriter"/> to write to. Defaults to <see cref="Console.Out"/>.
         /// </summary>
         public TextWriter OutputTo { get; set; } = Console.Out;
-    }
 
-    public enum Format
+		public bool IncludeHeaderRow { get; set; } = false;
+
+	}
+
+	public enum Format
     {
         Default = 0,
         MarkDown = 1,

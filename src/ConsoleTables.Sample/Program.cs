@@ -82,7 +82,16 @@ static class Program
 
         noCount.AddRow(1, 2, 3).Write();
 
-        Console.ReadKey();
+		Console.WriteLine("\nHeader Row Excluded From Output");
+		table = new ConsoleTable("Header1", "Header2", "Header3");
+		table.AddRow("valA1", "valA2", "valA3");
+		table.AddRow("valB1", "valB2", "valB3");
+		table.AddRow("valC1", "valC2", "valC3");
+		table
+			.Configure(o => o.IncludeHeaderRow = false)
+			.Write(Format.Minimal);
+
+		Console.ReadKey();
     }
 }
 

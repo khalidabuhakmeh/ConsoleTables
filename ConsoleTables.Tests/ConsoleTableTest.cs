@@ -177,7 +177,30 @@ $@"| Name      | Age |
             Assert.NotEmpty(testWriter.ToString());
         }
 
-        [Fact]
+		[Fact]
+		public void WhenConfiguredToExcludedHeaderRowOutputShouldNotConaintaHeaders()
+		{
+			var testWriter = new StringWriter();
+
+			var headerList = new List<string> { "Header1", "Header2", "Header3" };
+
+			var table = new ConsoleTable();
+			table.AddColumn(headerList);
+			table.AddRow("valA1", "valA2", "valA3");
+			table.AddRow("valB1", "valB2", "valB3");
+			table.AddRow("valC1", "valC2", "valC3");
+			
+			table.Configure(o => o.IncludeHeaderRow = false)
+				.Write();
+			string tableOutput = testWriter.ToString();
+
+			foreach (string header in headerList)
+			{
+				Assert.DoesNotContain(header, tableOutput);
+			}
+		}
+
+		[Fact]
         public void TestDictionaryTable()
         {
             Dictionary<string, Dictionary<string, object>> data = new Dictionary<string, Dictionary<string, object>>()
