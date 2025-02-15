@@ -376,7 +376,7 @@ namespace ConsoleTables
         /// </summary>
         public TextWriter OutputTo { get; set; } = Console.Out;
 
-		public bool IncludeHeaderRow { get; set; } = false;
+		public bool IncludeHeaderRow { get; set; } = true;
 
 	}
 
