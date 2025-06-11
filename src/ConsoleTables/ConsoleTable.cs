@@ -14,6 +14,9 @@ namespace ConsoleTables
         public IList<object> Columns { get; }
         public IList<object[]> Rows { get; }
 
+        public int MaxWidth { get; set; } = 40;
+        public char WordBreakDelimiter { get; private set; }
+
         public ConsoleTableOptions Options { get; }
         public Type[] ColumnTypes { get; private set; }
 
@@ -36,6 +39,7 @@ namespace ConsoleTables
         {
             Options = options ?? throw new ArgumentNullException("options");
             Rows = new List<object[]>();
+            WordBreakDelimiter = ' ';
             Columns = new List<object>(options.Columns);
         }
 
@@ -43,6 +47,12 @@ namespace ConsoleTables
         {
             foreach (var name in names)
                 Columns.Add(name);
+            return this;
+        }
+
+        public ConsoleTable SetWordBreakDelimiter(char delimiter)
+        {
+            WordBreakDelimiter = delimiter;
             return this;
         }
 
@@ -191,6 +201,38 @@ namespace ConsoleTables
         {
             var allLines = new List<object[]>();
             allLines.Add(Columns.ToArray());
+
+            for (var i = 0; i < Rows.Count; i++)
+            {
+                var row = Rows[i];
+
+                if (row.Any(o => o != null && o.ToString().Length > MaxWidth)) //checks if any column exceeds the MaxWidth
+                {
+                    var newRow = new object[row.Length];
+                    for (var j = 0; j < row.Length; j++) //loop through cells
+                    {
+                        var cellStr = row[j]?.ToString() ?? "";
+                        if (cellStr.Length > MaxWidth) //if cell exceeds MaxWidth
+                        {
+                            var cutCell = cellStr[..MaxWidth]; //cut the cell
+                            var leftOver = cellStr[MaxWidth..]; //into two parts
+                            if (cutCell[^1] != ' ' && cutCell[0] != ' ') //if the cut is in the middle of a word
+                            {
+                                var lastSpace = cutCell.LastIndexOf(WordBreakDelimiter); //find the last WordBreak Delimiter of the first cell
+                                if (lastSpace > 0) //if there is a space
+                                {
+                                    cutCell = cellStr[..lastSpace]; //cut the cell at the last space
+                                    leftOver = cellStr[lastSpace..]; //the leftover is the rest of the cell
+                                }//if there is no space, the cell will be cut at MaxWidth
+                            }
+                            newRow[j] = leftOver.Trim();
+                            Rows[i][j] = cutCell.Trim();
+                        }
+                    }
+                    Rows.Insert(i + 1, newRow);
+                }
+            }
+
             allLines.AddRange(Rows);
 
             Formats = allLines.Select(d =>
