@@ -139,6 +139,22 @@ namespace ConsoleTables
 
             return table;
         }
+        public static ConsoleTable From(Object[][] values)
+        {
+            var table = new ConsoleTable();
+            for (var i = 0; i < values.Length; i++)
+            {
+                if (i == 0)
+                {
+                    table.AddColumn(values[i].Select(x => x.ToString()));
+                }
+                else
+                {
+                    table.AddRow(values[i]);
+                }
+            }
+            return table;
+        }
 
         public override string ToString()
         {

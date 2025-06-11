@@ -230,6 +230,23 @@ $@"| Name      | Age |
 ",table.ToMarkDownString());
 
         }
+        [Fact]
+        public void TestObjectArray()
+        {
+            Object[][] userData = new Object[][]
+            {
+                new Object[] { "Column1", "Column2" },
+                new Object[] { "Test", 1 },
+                new Object[] { "Test", 2 }
+            };
+            var table = ConsoleTable.From(userData);
+            string minimalString = table.ToMinimalString();
+            Assert.Equal(@"| Column1 | Column2 |
+|---------|---------|
+| Test    | 1       |
+| Test    | 2       |
+", minimalString);
+        }
 
         [Fact]
         public void TestMinimalFormating()
