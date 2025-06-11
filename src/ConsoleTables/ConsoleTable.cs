@@ -185,6 +185,10 @@ namespace ConsoleTables
 
         private void SetFormats(List<int> columnLengths, List<string> columnAlignment)
         {
+            SetFormats(columnLengths, columnAlignment, "|");
+        }
+        private void SetFormats(List<int> columnLengths, List<string> columnAlignment, string delimiterStr)
+        {
             var allLines = new List<object[]>();
             allLines.Add(Columns.ToArray());
             allLines.AddRange(Rows);
@@ -196,9 +200,9 @@ namespace ConsoleTables
                     {
                         var value = d[i]?.ToString() ?? "";
                         var length = columnLengths[i] - (GetTextWidth(value) - value.Length);
-                        return " | {" + i + "," + columnAlignment[i] + length + "}";
+                        return " " + delimiterStr + " {" + i + "," + columnAlignment[i] + length + "}";
                     })
-                    .Aggregate((s, a) => s + a) + " |";
+                    .Aggregate((s, a) => s + a) + " " + delimiterStr;
             }).ToList();
         }
 
@@ -282,9 +286,9 @@ namespace ConsoleTables
                 .Select(GetNumberAlignment)
                 .ToList();
 
-            SetFormats(columnLengths, columnAlignment);
-
             var delimiterStr = delimiter == char.MinValue ? string.Empty : delimiter.ToString();
+            SetFormats(columnLengths, columnAlignment, delimiterStr);
+
             var format = (Enumerable.Range(0, Columns.Count)
                 .Select(i => " " + delimiterStr + " {" + i + "," + columnAlignment[i] + columnLengths[i] + "}")
                 .Aggregate((s, a) => s + a) + " " + delimiterStr).Trim();
