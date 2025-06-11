@@ -42,13 +42,15 @@ namespace ConsoleTables.Tests
             var table = ConsoleTable.From(users).ToString();
 
             Assert.Equal(
-$@" ------------------- 
- | Name      | Age |
- ------------------- 
- | Alexandre | 36  |
- ------------------- 
+                $"""
+                  ------------------- 
+                  | Name      | Age |
+                  ------------------- 
+                  | Alexandre | 36  |
+                  ------------------- 
 
- Count: 1", table);
+                  Count: 1
+                 """, table);
         }
 
         [Fact]
@@ -61,15 +63,17 @@ $@" -------------------
                 .ToString();
 
             Assert.Equal(
-$@" -------------------------------------------------- 
- | one                        | two       | three |
- -------------------------------------------------- 
- | 1                          | 2         | 3     |
- -------------------------------------------------- 
- | this line should be longer | yes it is | oh    |
- -------------------------------------------------- 
+                $"""
+                  -------------------------------------------------- 
+                  | one                        | two       | three |
+                  -------------------------------------------------- 
+                  | 1                          | 2         | 3     |
+                  -------------------------------------------------- 
+                  | this line should be longer | yes it is | oh    |
+                  -------------------------------------------------- 
 
- Count: 2", table);
+                  Count: 2
+                 """, table);
         }
 
         [Fact]
@@ -86,15 +90,17 @@ $@" --------------------------------------------------
                 .ToString();
 
             Assert.Equal(
-$@" -------------- 
- | Name | Age |
- -------------- 
- | René |  59 |
- -------------- 
- | Otto |  52 |
- -------------- 
+                $"""
+                  -------------- 
+                  | Name | Age |
+                  -------------- 
+                  | René |  59 |
+                  -------------- 
+                  | Otto |  52 |
+                  -------------- 
 
- Count: 2", table);
+                  Count: 2
+                 """, table);
         }
 
         [Fact]
@@ -118,13 +124,15 @@ $@" --------------
                 .ToString();
 
             Assert.Equal(
-$@" ------------------- 
- | Name      | Age |
- ------------------- 
- | Alexandre |  36 |
- ------------------- 
+                $"""
+                  ------------------- 
+                  | Name      | Age |
+                  ------------------- 
+                  | Alexandre |  36 |
+                  ------------------- 
 
- Count: 1", table);
+                  Count: 1
+                 """, table);
         }
 
         [Fact]
@@ -140,10 +148,12 @@ $@" -------------------
                 .ToMarkDownString();
 
             Assert.Equal(
-$@"| Name      | Age |
-|-----------|-----|
-| Alexandre |  36 |
-", table);
+                $"""
+                 | Name      | Age |
+                 |-----------|-----|
+                 | Alexandre |  36 |
+
+                 """, table);
         }
 
         [Fact]
@@ -203,12 +213,14 @@ $@"| Name      | Age |
             };
             var table = ConsoleTable.FromDictionary(data);
 
-            Assert.Equal(@"|   | A     | B     | C     |
-|---|-------|-------|-------|
-| A | True  | False | True  |
-| B | False | True  | False |
-| C | False | False | True  |
-",table.ToMarkDownString());
+            Assert.Equal("""
+                         |   | A     | B     | C     |
+                         |---|-------|-------|-------|
+                         | A | True  | False | True  |
+                         | B | False | True  | False |
+                         | C | False | False | True  |
+
+                         """,table.ToMarkDownString());
 
         }
         [Fact]
@@ -222,30 +234,34 @@ $@"| Name      | Age |
             data.Rows.Add(false, true, false);
             data.Rows.Add(false, false, true);
             var table = ConsoleTable.From(data);
-            Assert.Equal(@"| A     | B     | C     |
-|-------|-------|-------|
-| True  | False | True  |
-| False | True  | False |
-| False | False | True  |
-",table.ToMarkDownString());
+            Assert.Equal("""
+                         | A     | B     | C     |
+                         |-------|-------|-------|
+                         | True  | False | True  |
+                         | False | True  | False |
+                         | False | False | True  |
+
+                         """,table.ToMarkDownString());
 
         }
         [Fact]
         public void TestObjectArray()
         {
-            Object[][] userData = new Object[][]
-            {
-                new Object[] { "Column1", "Column2" },
-                new Object[] { "Test", 1 },
-                new Object[] { "Test", 2 }
-            };
+            Object[][] userData =
+            [
+                ["Column1", "Column2"],
+                ["Test", 1],
+                ["Test", 2]
+            ];
             var table = ConsoleTable.From(userData);
             string minimalString = table.ToMinimalString();
-            Assert.Equal(@"| Column1 | Column2 |
-|---------|---------|
-| Test    | 1       |
-| Test    | 2       |
-", minimalString);
+            Assert.Equal("""
+                         Column1  Column2 
+                         -----------------
+                         Test     1       
+                         Test     2       
+                         
+                         """, minimalString);
         }
 
         [Fact]

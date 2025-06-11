@@ -70,4 +70,10 @@ namespace ConsoleTables.Sample
             Date = DateTime.UtcNow;
         }
     }
+    
+    public class TableData(string key, Dictionary<string, object> values)
+    {
+        public string Key { get; } = key;
+        public Dictionary<string, object> Values { get; } = values;
+    }
 }

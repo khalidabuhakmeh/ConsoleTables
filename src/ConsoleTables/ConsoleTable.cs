@@ -91,7 +91,7 @@ namespace ConsoleTables
                 var r = new List<object> { row.Key };
                 foreach (var columName in columNames.Skip(1))
                 {
-                    r.Add(row.Value.TryGetValue(columName, out var value) ? value : "");
+                    r.Add(row.Value.GetValueOrDefault(columName, ""));
                 }
 
                 table.AddRow(r.Cast<object>().ToArray());
@@ -209,14 +209,9 @@ namespace ConsoleTables
         }
 
 
-        private void SetFormats(List<int> columnLengths, List<string> columnAlignment)
+        private void SetFormats(List<int> columnLengths, List<string> columnAlignment, string delimiterStr = "|")
         {
-            SetFormats(columnLengths, columnAlignment, "|");
-        }
-        private void SetFormats(List<int> columnLengths, List<string> columnAlignment, string delimiterStr)
-        {
-            var allLines = new List<object[]>();
-            allLines.Add(Columns.ToArray());
+            var allLines = new List<object[]> { Columns.ToArray() };
 
             for (var i = 0; i < Rows.Count; i++)
             {
